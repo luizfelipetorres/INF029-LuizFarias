@@ -15,7 +15,7 @@ int main(){
     
     v1 = v2 - v1;
     v2 = v2 - v1;
-    v1 = v2 + v1;
+    v1 = v2 + v1;  
 
     printf("v1: %d\nv2: %d", v1, v2);
 }
