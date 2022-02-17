@@ -10,5 +10,5 @@ int main(){
     scanf("%d", &idade2);
 
     soma = idade1 + idade2;
-    printf("A soma das idades é igual a {%d}", soma);
+    printf("A soma das idades é igual a %d", soma);
 }
