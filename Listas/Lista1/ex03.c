@@ -12,7 +12,7 @@ int fatorial(int valor){
     if (valor < 0){
         //Em caso de erro, retornar zero
         return 0;
-    } else if (valor == 0){
+    } else if ((valor == 0) || (valor ==1)){
         //Fatorial de 0 = 1
         return 1;
     } else {
@@ -35,8 +35,8 @@ int main(){
 
 //  Exibir saídas
     if (fat == 0){
-        printf("O valor %d eh negativo e nao possui fatorial!", valor);
+        printf("O valor %d eh negativo e nao possui fatorial!\n", valor);
     }else{
-        printf("O fatorial de %d eh %d.", valor, fat);
+        printf("O fatorial de %d eh %d.\n", valor, fat);
     }
 }
