@@ -9,6 +9,7 @@ Essa função deve ler três palavras do
 usuário e retornar as três palavras. 
 A função main deve imprimir essas três palavras.
 */
+#define QTD 3
 
 void ler3Palavras(char m[][COL], int n){
 //  Coletar entradas
