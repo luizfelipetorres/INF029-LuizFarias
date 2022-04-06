@@ -29,6 +29,7 @@ typedef struct {
 } tpCliente;
 
 
+
 int formatarString(char *string);
 
 /**
