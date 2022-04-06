@@ -1,9 +1,5 @@
-#include <stdio.h>
-#include <string.h>
+/* ENUNCIADO
 
-int formatarString(char *string);
-
-/*
 Evolua o programa que tem a função cadastrarCliente, para fazer as validações dos dados. 
 Cada validação deve ser feita em uma função diferente, conforme lista abaixo. A função cadastrarCliente deve chamar cada uma dessas funções. 
 A função main deve imprimir se o cadastro foi realizado com sucesso ou se houve erro, informando onde foi o erro:
@@ -14,14 +10,11 @@ masculino; f e F para feminino, o e O para outro).
 • função validarNacimento: recebe o data digitada, e valida é uma data válida.
 */
 
-/*
+#include <stdio.h>
+#include <string.h>
 
-  Validar sexo
-  Dado
+#define MAX_NOME 20
 
-
-
-*/
 typedef struct {
     int dia;
     int mes;
@@ -35,18 +28,47 @@ typedef struct {
     char sexo;
 } tpCliente;
 
+
+int formatarString(char *string);
+
+/**
+  Função que verifica se o ano é bissexto
+    -Retorna 1 se for bissexto
+    -Retorna 0 se não for
+*/
+int anoBissexto (int ano){
+  int bissexto = 0;
+  
+  if ((ano % 400) == 0) 
+    bissexto = 1;
+  else if (
+    (ano % 100 != 0) && 
+    (ano % 4 == 0)
+  ){
+    bissexto = 1;
+  } else
+    bissexto = 0;
+  return bissexto;
+}
+
+/**
+  Função que valida o nome do cliente
+    -Retorna 0 se tiver até 20 caracteres
+    -Retorna o número de caracteres se tiver mais de 20
+  */
 int validarNome(char *nome){
     //Retirar a quebra de linha da string
     int ln = formatarString(nome);
 
-    if (ln > 20){
-        printf("\nVoce digitou um nome de %d caracteres\n"
-            "Digite um nome de ate 20 caracteres!\n", ln);
-        return 0;
+    if (ln > MAX_NOME){
+        return ln;
     }else
-        return 1;
+        return 0;
 }
 
+/**
+  Função auxiliar usada para remover a quebra de linha da string
+*/
 int formatarString(char *string){
     int ln = strlen(string) - 1;
     if ((string[ln]) == '\n')
@@ -54,6 +76,11 @@ int formatarString(char *string){
     return ln;
 }
 
+/**
+  Função que valida o sexo do cliente
+    -Retorna 1 se estiver válido
+    -Retorna 0 se estiver inválido
+*/
 int validarSexo(char sexo){
 
     if (
@@ -64,11 +91,15 @@ int validarSexo(char sexo){
         return 1;
         
     }else{
-        printf("Digite uma opção válida (M, F, O)!\n");
         return 0;
     }
 }
 
+/**
+  Função que valida o CPF do cliente
+    -Retorna 1 se estiver válido
+    -Retorna 0 se estiver inválido
+*/
 int validarCPF(char *cpf){
   int ln = formatarString(cpf);
 
@@ -78,53 +109,85 @@ int validarCPF(char *cpf){
     (cpf[7] != '.') ||
     (cpf[11] != '-') 
   ){
-    printf("CPF inválido! Digite no formato ###.###.###-##\n");
     return 0;
   }else{
     return 1;
   }
 }
 
+/**
+  Valida a data de nascimento do cliente
+    -Retorna 1 se estiver válido
+    -Retorna 0 se estiver inválido
+*/
 int validarNascimento(tpNascimento nascimento){
+  int bissexto = anoBissexto(nascimento.ano);
 
-  if (
-    (nascimento.dia < 1) || (nascimento.dia > 31) ||
-    (nascimento.mes < 1) || (nascimento.mes > 12) ||
-    (nascimento.ano < 1900) || (nascimento.ano > 2022)
-  ){
-    printf("Data invalida! Digite no formato ##/##/####:\n");
-    return 0;
+  if (nascimento.ano < 1900) return 0;
+  else if (nascimento.mes < 1 || nascimento.mes > 12) return 0;
+  else if (nascimento.dia < 1 || nascimento.dia > 31) return 0;
+
+  if (nascimento.mes == 2){
+    if (bissexto && nascimento.dia > 29) return 0;
+    else if (!bissexto && nascimento.dia > 28) return 0;
+    else 
+      return 1;
+  }else if (nascimento.mes <=7){
+    if (nascimento.mes % 2 == 0 && nascimento.dia == 31)
+      return 0;
+    else
+      return 1;
   }
-    return 1;
+    else{
+      if (nascimento.mes % 2 == 1 && nascimento.dia == 31)
+        return 0;
+      else
+        return 1;
+  }    
 }
 
+
+/**
+  Função principal, coleta as entradas e chama as validações
+*/
 void cadastrarCliente(tpCliente *c){
+    int validate = 0;
 
     //Inserir nome em loop até que validarNome returne 1
     do{
-        printf("Digite o nome do cliente: \n");
+        printf("Digite o nome do cliente (20 caracteres): \n");
         fgets((*c).nome, 40, stdin);
-    }while(!validarNome((*c).nome));
+        validate = validarNome((*c).nome);
+        if (validate)
+          printf("\nVoce digitou um nome de %d caracteres\n", validate);
+    }while(validate);
     
-    printf("Digite a data de nascimento do cliente (dd/mm/aaaa): \n");
-
     do{
+      printf("Digite a data de nascimento do cliente (dd/mm/aaaa): \n");
       scanf("%d/%d/%d", &(*c).nascimento.dia, &(*c).nascimento.mes, &(*c).nascimento.ano);
       getchar();
-      
-    }while(!validarNascimento((*c).nascimento));
+      validate = validarNascimento((*c).nascimento);
+      if (!validate) 
+        printf("Data invalida!!! ");
+    }while(!validate);
 
-    printf("Digite o CPF do cliente: (###.###.###-##): \n");
     do{    
+      printf("Digite o CPF do cliente: (###.###.###-##): \n");
       fgets((*c).cpf, 15, stdin);
       getchar();
-    }while(!validarCPF((*c).cpf));
+      validate = validarCPF((*c).cpf);
+      if (!validate) 
+        printf("CPF inválido!!! ");
+    }while(!validate);
 
-    printf("Digite o sexo do cliente (F/M/O): \n");
     do{
-        scanf("%c", &(*c).sexo);
-        getchar();
-    }while(!validarSexo((*c).sexo));
+      printf("Digite o sexo do cliente (F/M/O): \n");
+      scanf("%c", &(*c).sexo);
+      getchar();
+      validate = validarSexo((*c).sexo);
+      if (!validate)  
+        printf("Opção inválida!!! ");
+    }while(!validate);
 
 }
 
