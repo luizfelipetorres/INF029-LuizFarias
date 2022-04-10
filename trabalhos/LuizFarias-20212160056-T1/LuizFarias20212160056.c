@@ -22,8 +22,9 @@
 // #################################################
 
 #include <stdio.h>
-#include "PrimeiroUltimoNomeMATRICULA.h" // Substitua pelo seu arquivo de header renomeado
+#include "LuizFarias20212160056.h" // Substitua pelo seu arquivo de header renomeado
 #include <stdlib.h>
+#include <string.h>
 /*
 ## função utilizada para testes  ##
 
@@ -128,7 +129,9 @@ DataQuebrada quebraData(char data[]){
 @objetivo
     Validar uma data
 @entrada
-    uma string data. Formatos que devem ser aceitos: dd/mm/aaaa, onde dd = dia, mm = mês, e aaaa, igual ao ano. dd em mm podem ter apenas um digito, e aaaa podem ter apenas dois digitos.
+    uma string data. Formatos que devem ser aceitos: 
+    dd/mm/aaaa, onde dd = dia, mm = mês, e aaaa, igual ao ano. 
+    dd e mm podem ter apenas um digito, e aaaa podem ter apenas dois digitos.
 @saida
     0 -> se data inválida
     1 -> se data válida
@@ -136,26 +139,74 @@ DataQuebrada quebraData(char data[]){
     Não utilizar funções próprias de string (ex: strtok)   
     pode utilizar strlen para pegar o tamanho da string
  */
+
+/**
+Verifica se é bissexto e altera o valor de ano (soma 2000 se tiver dois dígitos)
+Retornos:
+    1 se for bissexto;
+    0 se não for.
+*/
+int anoBissexto(int *ano){
+    if (*ano <= 99) *ano += 2000;
+    if ((*ano % 400) == 0){
+        return 1;
+    } else if (((*ano % 4) == 0) && ((*ano % 100) != 0)){
+        return 1;
+    }else{
+        return 0;
+    }
+}
+
 int q1(char data[])
 {
     int datavalida = 1;
+    DataQuebrada dataQuebrada;
+    int i; 
+    size_t len;
+    int iDia = 0, iMes = 0, iAno = 0;
+    int bissexto; //1 se o ano for bissexto, 0 se não for
+    int qtdDiasMes;
 
-    //quebrar a string data em strings sDia, sMes, sAno
-
-    //DataQuebrada dataQuebrada = quebraData(data);
-    //if (dataQuebrada.valido == 0) return 0;
 
     //converter sDia, sMes e sAno em inteiros (ex: atoi)
+    dataQuebrada = quebraData(data);
 
-    //criar as variáveis iDia, iMes, iAno
-    //int iAno = atoi(dataQuebrada.sAno);
+    //Verificar se a struct é válida e o intervalo de meses
+    if (dataQuebrada.valido == 0) return 0;
+    if ((dataQuebrada.iMes < 1) || (dataQuebrada.iMes > 12)) return 0;
+    
+    bissexto = anoBissexto(&dataQuebrada.iAno); 
 
-    //printf("%s\n", data);
+    //Definir a quantidade máxima de dias do mês
+    if (dataQuebrada.iMes <= 7){
+        
+        //Se for fevereiro
+        if (dataQuebrada.iMes == 2){
+            if (bissexto) 
+                qtdDiasMes = 29;
+            else 
+                qtdDiasMes = 28;
+        }else
 
-    if (datavalida)
-        return 1;
-    else
-        return 0;
+        //Se não for fevereiro e for <= 7, 30 ou 31
+            qtdDiasMes = 30 + (dataQuebrada.iMes % 2);
+        
+    }else{
+        qtdDiasMes = 31 - (dataQuebrada.iMes % 2);
+    }
+    
+    if (dataQuebrada.iDia < 1 || dataQuebrada.iDia > qtdDiasMes)
+        datavalida = 0;
+    
+    /* printf("Dia: %d\nMes: %d\nAno: %d\nRetorno: %d\nqtdDiasMes: %d\nBissexto: %d\n",
+        dataQuebrada.iDia,
+        dataQuebrada.iMes,
+        dataQuebrada.iAno,
+        datavalida,
+        qtdDiasMes,
+        bissexto
+    ); //debug */
+    return datavalida;
 }
 
 

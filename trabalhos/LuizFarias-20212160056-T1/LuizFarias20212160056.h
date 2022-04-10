@@ -20,8 +20,8 @@
 // Última atualização: 07/05/2021
 
 // #################################################
-#ifndef TRABALHO1_PRIMEIROULTIMONOMEMATRICULA_H
-#define TRABALHO1_PRIMEIROULTIMONOMEMATRICULA_H
+#ifndef TRABALHO1_LUIZFARIAS20212160056_H
+#define TRABALHO1_LUIZFARIAS20212160056_H
 
 typedef struct DQ
 {
@@ -41,6 +41,7 @@ typedef struct Qtd
 
 } DiasMesesAnos;
 
+int anoBissexto(int *ano); //Retorna 1 se for bissexto e 0 zero se não for
 int somar(int x, int y); //função utilizada para testes
 int fatorial(int x); //função utilizada para testes
 int q1(char data[]);
