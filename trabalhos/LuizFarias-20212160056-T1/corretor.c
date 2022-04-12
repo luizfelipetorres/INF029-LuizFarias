@@ -34,14 +34,14 @@ int main()
     
     setlocale(LC_ALL, "Portuguese");
 
-    testQ4();
+    testQ5();
     /*
     testQ1();
     testQ2();
     testQ3();
+    testQ4();
     testSomar();
     testFatorial();
-    testQ5();
     testQ6();*/
 }
 
@@ -221,6 +221,9 @@ void testQ5()
     printf("%d\n", q5(78) == 87);
     printf("%d\n", q5(3) == 3);
     printf("%d\n", q5(5430) == 345);
+    printf("%d\n", q5(68944) == 44986);
+    printf("%d\n", q5(6894432) == 2344986);
+    printf("%d\n", q5(10) == 1);
 }
 
 void testQ6()

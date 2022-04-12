@@ -435,38 +435,39 @@ int q3(char *texto, char c, int isCaseSensitive)
 int q4(char *strTexto, char *strBusca, int posicoes[30])
 {
     int qtdOcorrencias = 0;
-    int inicio = 0, fim = 0;
+    int pInicio = 0, pFim = 0, vInicio, vFim;
     int lenTexto = strlen(strTexto);
     int lenBusca = strlen(strBusca);
+    int acento = 0;
+    int j = 0;
 
+    for (int i = 0; i < lenTexto; i++){
+        if (strTexto[i] < 0 && strTexto[i+1] < 0)
+            acento++;
 
-
-    printf("lenBusca: %d\nlenTexto: %d\n", lenBusca, lenTexto);
-
-    for (int i = 0, j = 0; i <= lenTexto; i++){
         if (strTexto[i] == strBusca[j]){
             j++;
+
             if (j == lenBusca){
-                inicio = qtdOcorrencias * 2;
-                fim = (qtdOcorrencias * 2) + 1;
-                
-                posicoes[inicio] = i - lenBusca + 2;
-                posicoes[fim] = i + 1;
-                //printf("\ninicio %d, fim %d\n", posicoes[inicio], posicoes[fim]);
+                pInicio = qtdOcorrencias * 2;
+                pFim = qtdOcorrencias * 2 + 1;
+                vInicio = i - j + 2 - acento;
+                vFim = i + 1 - acento;
+
+                posicoes[pInicio] = vInicio;
+                posicoes[pFim] = vFim;
+                /* printf(
+                    "posicoes %d e %d. Acento %d\n", 
+                    posicoes[qtdOcorrencias * 2],
+                    posicoes[(qtdOcorrencias * 2) + 1],
+                    acento
+                ); //debug*/
                 qtdOcorrencias++;
-                j = inicio = fim = 0;
+                j = 0;
             }
-            
-        }else{
+        }else
             j = 0;
-        }
-        printf("%d %c %d\n", i, strTexto[i], strTexto[i]);
     }
-    printf("\n");
-    for (int i = 0; posicoes[i] != -1; i++){
-        printf("%d ", posicoes[i]);
-    }
-    printf("\n");
 
     return qtdOcorrencias;
 }
@@ -483,8 +484,32 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
 
 int q5(int num)
 {
+    int resultado = 0;
+    int grandeza = 1;
+    int aux;
+    int i;
 
-    return num;
+    //Achar o grandeza do número
+    while (grandeza <=  num)
+        grandeza *= 10;
+    grandeza /= 10;
+
+    //Pegar a unidade
+    resultado += (num / grandeza);
+    i = 10;
+
+    //Pegar números do meio
+    while (grandeza >= 10){
+        resultado += ((num % grandeza) / (grandeza / 10) * i);
+        grandeza /= 10;
+        i *= 10;
+    }
+
+    //Pegar a maior grandeza
+    resultado += ((num % grandeza) * 10);
+    //printf("resultado: %d\n", resultado);
+
+    return resultado;
 }
 
 /*
