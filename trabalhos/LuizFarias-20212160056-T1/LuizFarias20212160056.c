@@ -490,9 +490,7 @@ int q5(int num)
     int i;
 
     //Achar o grandeza do número
-    while (grandeza <=  num)
-        grandeza *= 10;
-    grandeza /= 10;
+    grandeza = encontraGrandeza(num);
 
     //Pegar a unidade
     resultado += (num / grandeza);
@@ -522,8 +520,52 @@ int q5(int num)
     Quantidade de vezes que número de busca ocorre em número base
  */
 
+int encontraGrandeza(int numero){
+    int g = 1;
+    
+    while (g <= numero)
+        g *= 10;
+    g /=  10;
+
+    return g;
+}
+
 int q6(int numerobase, int numerobusca)
 {
-    int qtdOcorrencias;
+    int qtdOcorrencias = 0;
+    int gBase = 1;
+    int gBusca = 1;
+    int resto = -1;
+
+    //Encontrar a grandeza de base e busca
+    gBase = encontraGrandeza(numerobase);
+    gBusca = encontraGrandeza(numerobusca);
+   /*  printf("nbase inicial: %d\n", numerobase);
+    printf("gBase inicial: %d\n", gBase);
+    printf("gBusca inicial: %d\n", gBusca); */
+    
+    while (gBase >= gBusca){
+        resto = (numerobase / (gBase / gBusca));
+        if (resto == numerobusca){
+            qtdOcorrencias++;
+            gBase /= gBusca;
+            numerobase %= gBase;
+        }else{
+            numerobase %= gBase;
+            gBase /= 10;
+        }
+        
+/*         printf("nbase agora: %d\n", numerobase);
+ */    
+    }
+    /* printf(
+        "nbase: %d\nprocurado: %d\nresto: %d\n",
+        numerobase,
+        numerobusca,
+        resto
+    ); */
+
     return qtdOcorrencias;
+
+
 }
