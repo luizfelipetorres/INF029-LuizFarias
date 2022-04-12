@@ -25,6 +25,8 @@
 #include "LuizFarias20212160056.h" // Substitua pelo seu arquivo de header renomeado
 #include <stdlib.h>
 #include <string.h>
+
+
 /*
 ## função utilizada para testes  ##
 
@@ -70,8 +72,6 @@ int teste(int a)
 
     return val;
 }
-
-
 
 DataQuebrada quebraData(char data[]){
     DataQuebrada dq;
@@ -157,6 +157,25 @@ int anoBissexto(int *ano){
     }
 }
 
+/*
+Retornar a quantidade de dias do mes em questão
+*/
+int diasMes(int mes, int bissexto){
+    if (mes <= 7){
+        //Se for fevereiro
+        if (mes == 2){
+            if (bissexto) 
+                return 29;
+            else 
+                return 28;
+        }else{
+        //Se não for fevereiro e for <= 7, 30 ou 31
+            return 30 + (mes % 2);
+        }
+    }else
+        return 31 - (mes % 2);
+}
+
 int q1(char data[])
 {
     int datavalida = 1;
@@ -178,38 +197,29 @@ int q1(char data[])
     bissexto = anoBissexto(&dataQuebrada.iAno); 
 
     //Definir a quantidade máxima de dias do mês
-    if (dataQuebrada.iMes <= 7){
-        
-        //Se for fevereiro
-        if (dataQuebrada.iMes == 2){
-            if (bissexto) 
-                qtdDiasMes = 29;
-            else 
-                qtdDiasMes = 28;
-        }else
-
-        //Se não for fevereiro e for <= 7, 30 ou 31
-            qtdDiasMes = 30 + (dataQuebrada.iMes % 2);
-        
-    }else{
-        qtdDiasMes = 31 - (dataQuebrada.iMes % 2);
-    }
+    qtdDiasMes = diasMes(dataQuebrada.iMes, bissexto);
     
     if (dataQuebrada.iDia < 1 || dataQuebrada.iDia > qtdDiasMes)
         datavalida = 0;
-    
-    /* printf("Dia: %d\nMes: %d\nAno: %d\nRetorno: %d\nqtdDiasMes: %d\nBissexto: %d\n",
-        dataQuebrada.iDia,
-        dataQuebrada.iMes,
-        dataQuebrada.iAno,
-        datavalida,
-        qtdDiasMes,
-        bissexto
-    ); //debug */
+
     return datavalida;
 }
 
+/*
+Função que compara dois numeros: n1 e n2
+Retornos:
+0 se os dois forem iguais;
+1 se o primeiro for maior;
+2 se o segundo for maior
 
+Utilizar númros de mesma grandeza (dd, mm ou aaaa)
+*/
+Compara comparaNumeros(int n1, int n2){
+    if (n1 == n2)
+        return 0;
+    else
+        return 2 - (n1 > n2);
+}
 
 /*
  Q2 = diferença entre duas datas
@@ -225,30 +235,139 @@ int q1(char data[])
     4 -> datainicial > datafinal
     Caso o cálculo esteja correto, os atributos qtdDias, qtdMeses e qtdAnos devem ser preenchidos com os valores correspondentes.
  */
+
+
+
+
 DiasMesesAnos q2(char datainicial[], char datafinal[])
 {
 
     //calcule os dados e armazene nas três variáveis a seguir
     DiasMesesAnos dma;
+    DataQuebrada datai, dataf;
+    Compara comparaAno, comparaDia, comparaMes;
+    int bissextoi, bissextof;
+    int qtdDiasMesi, qtdDiasMesf;
 
-    if (q1(datainicial) == 0){
+    if (!q1(datainicial)){
       dma.retorno = 2;
-      return dma;
-    }else if (q1(datafinal) == 0){
-      dma.retorno = 2;
-      return dma;
+
+    }else if (!q1(datafinal)){
+      dma.retorno = 3;
+
     }else{
-      //verifique se a data final não é menor que a data inicial
-      
-      //calcule a distancia entre as datas
 
 
-      //se tudo der certo
-      dma.retorno = 1;
-      return dma;
-      
-    }
+        printf("%s - %s\n", datainicial, datafinal);
+        datai = quebraData(datainicial);
+        dataf = quebraData(datafinal);
+
+        comparaAno = comparaNumeros(datai.iAno, dataf.iAno);
+        comparaMes = comparaNumeros(datai.iMes, dataf.iMes);
+        comparaDia = comparaNumeros(datai.iDia, dataf.iDia);
+        /* printf(
+            "C.Ano: %d\nC.Mes: %d\nC.Dia: %d\n",
+            comparaAno,
+            comparaMes,
+            comparaDia
+        ); //debug */
+
+        bissextoi = anoBissexto(&datai.iAno);
+        bissextof = anoBissexto(&dataf.iAno);
+
+        qtdDiasMesi = diasMes(datai.iMes, bissextoi);
+        qtdDiasMesf = diasMes(dataf.iMes, bissextof);
+        
+        //Verificar se ano final é maior
+        if (comparaAno == I_MAIOR){
+            dma.retorno = 4;
+            return dma;
+
+        //Verificar se anos são iguais e mes final é maior
+        } else if (
+            (comparaAno == IGUAIS) && 
+            (comparaMes == I_MAIOR)
+        ){
+            dma.retorno = 4;
+            return dma;
+        
+        //Verificar se ano e mes são iguais e dia final é maior
+        }else if(
+            (comparaAno == IGUAIS) && 
+            (comparaMes == IGUAIS) && 
+            (comparaDia == I_MAIOR)
+        ){
+            dma.retorno = 4;
+            return dma;
+        }else{
+
+            dma.qtdAnos = dataf.iAno - datai.iAno;
+            dma.qtdMeses = dataf.iMes - datai.iMes;
+            dma.qtdDias = dataf.iDia - datai.iDia;
+            dma.retorno = 1;
+
+            if (dma.qtdDias < 0){
+                dma.qtdMeses--;
+                dma.qtdDias += qtdDiasMesi;
+                if ( 
+                    datai.iMes == 2 && 
+                    dataf.iMes == 3 && 
+                    bissextof
+                )
+                    dma.qtdDias++; 
+            } 
+            
+            if (dma.qtdMeses < 0){
+                dma.qtdAnos--;
+                dma.qtdMeses += 12;
+            }
+
+
+            
+            /*
+            Primeiro, verificar dias. 
+                Se dias da data inicial for menor ou igual, qtdDias = diasFinal - diasInicial
+                senão, 
+                    qtdDias += (qtdDiasMesi - diaInicial) + diaFinal
+
+            depois, verificar meses
+                se mes inicialfor menor ou igual, qtdMeses = mesFinal - mesInicial
+
+            */
+            /* if (comparaDia == F_MAIOR || comparaDia == IGUAIS){
+                dma.qtdDias = dataf.iDia - datai.iDia;
+            }else{
+                dma.qtdDias = qtdDiasMesi - datai.iDia + dataf.iDia;
+            }
+
+            if (comparaAno == IGUAIS){
+                if (comparaMes == F_MAIOR){
+                    dma.qtdMeses = dataf.iMes - datai.iMes;
+                }else{
+
+                }
+
+            }else{
+
+            } */
+
+           
+
+        }
     
+        //verifique se a data final não é menor que a data inicial
+        //calcule a distancia entre as datas
+      //se tudo der certo
+    }
+
+    printf(
+        "qtdAnos: %d\nqtdMeses: %d\nqtdDias: %d\nRetorno: %d\n",
+        dma.qtdAnos,
+        dma.qtdMeses,
+        dma.qtdDias,
+        dma.retorno
+    ); //debug
+    return dma;
 }
 
 /*

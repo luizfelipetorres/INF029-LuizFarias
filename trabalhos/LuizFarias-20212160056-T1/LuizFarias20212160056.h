@@ -41,6 +41,13 @@ typedef struct Qtd
 
 } DiasMesesAnos;
 
+typedef enum compara {
+    IGUAIS = 0,
+    I_MAIOR = 1,
+    F_MAIOR = 2
+} Compara;
+
+Compara comparaNumeros(int n1, int n2);
 int anoBissexto(int *ano); //Retorna 1 se for bissexto e 0 zero se não for
 int somar(int x, int y); //função utilizada para testes
 int fatorial(int x); //função utilizada para testes

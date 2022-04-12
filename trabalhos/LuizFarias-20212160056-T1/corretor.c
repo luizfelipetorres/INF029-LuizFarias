@@ -31,12 +31,13 @@ void testQ6();
 
 int main()
 {
-    testQ1();
+
+    testQ2();
     /*
+    testQ1();
     testQ4();
     testSomar();
     testFatorial();
-    testQ2();
     testQ3();
     testQ5();
     testQ6();*/
@@ -81,12 +82,13 @@ void testQ2()
 {
     char datainicial[11], datafinal[11];
     int qtdDias, qtdMeses, qtdAnos;
+    int teste = 0;
     DiasMesesAnos dma;
 
     //teste 1
-    qtdDias = -1;
-    qtdMeses = -1;
-    qtdAnos = -1;
+    printf("\n\nteste %d\n", ++teste);
+    
+    qtdDias = qtdMeses = qtdAnos = -1;
 
     strcpy(datainicial, "01/06/2015");
     strcpy(datafinal, "01/06/2016");
@@ -97,29 +99,36 @@ void testQ2()
     printf("%d\n", dma.qtdAnos == 1);
 
     //teste 2 - retornos
-    qtdDias = -1;
-    qtdMeses = -1;
-    qtdAnos = -1;
+    
+    qtdDias = qtdMeses = qtdAnos = -1;
+
+    printf("\n\nteste %d\n", ++teste);
 
     strcpy(datainicial, "01/30/2015");
     strcpy(datafinal, "01/06/2016");
     dma = q2(datainicial, datafinal);
     printf("%d\n", dma.retorno == 2);
 
+    //Teste 3
+    printf("\n\nteste %d\n", ++teste);
+
     strcpy(datainicial, "01/3/2015");
     strcpy(datafinal, "40/06/2016");
     dma = q2(datainicial, datafinal);
     printf("%d\n", dma.retorno == 3);
+
+    //Teste 4
+    printf("\n\nteste %d\n", ++teste);
 
     strcpy(datainicial, "01/06/2016");
     strcpy(datafinal, "01/06/2015");
     dma = q2(datainicial, datafinal);
     printf("%d\n", dma.retorno == 4);
 
-    //teste 3
-    qtdDias = -1;
-    qtdMeses = -1;
-    qtdAnos = -1;
+    qtdDias = qtdMeses = qtdAnos = -1;
+
+    //teste 5
+    printf("\n\nteste %d\n", ++teste);
 
     strcpy(datainicial, "06/06/2017");
     strcpy(datafinal, "07/07/2017");
@@ -128,6 +137,32 @@ void testQ2()
     printf("%d\n", dma.qtdDias == 1);
     printf("%d\n", dma.qtdMeses == 1);
     printf("%d\n", dma.qtdAnos == 0);
+
+    //teste 6
+    printf("\nTESTES TABELA");
+    char datasi[][11] = {"06/06/2017\0", "06/06/2017\0", "26/07/2017\0", "26/06/2017\0", "27/02/2016\0", 
+        "27/02/2015\0", "28/01/2016\0", "28/02/2016\0", "29/02/2016\0", "29/02/2016\0", "29/02/2016\0", 
+        "29/02/2016\0"};
+    char datasf[][11] = {"07/07/2017\0", "05/07/2018\0", "25/08/2017\0", "26/07/2017\0", "03/03/2017\0", 
+        "03/03/2016\0", "29/02/2016\0", "28/02/2017\0", "28/02/2017\0", "28/02/2020\0", "29/02/2020\0", 
+        "28/02/2019\0"};
+    
+    int anos[] = {0, 1, 0, 0, 1, 1, 0, 1, 1, 3, 4, 3};
+    int meses[] = {1, 0, 0, 1, 0, 0, 1, 0, 0, 11, 0, 0};
+    int dias [] = {1, 29, 30, 0, 4, 5, 1, 0, 0, 30, 0, 0};
+    int i;
+    for (i = 0; i < 12; i++){
+        printf("\n\nteste tabela %d\n", i+1);
+        strcpy(datainicial, datasi[i]);
+        strcpy(datafinal, datasf[i]);
+        dma = q2(datainicial, datafinal);
+        printf("%d\n", dma.retorno == 1);
+        printf("%d\n", dma.qtdDias == dias[i]);
+        printf("%d\n", dma.qtdMeses == meses[i]);
+        printf("%d\n", dma.qtdAnos == anos[i]);
+    }
+
+    
 }
 
 void testQ3()
