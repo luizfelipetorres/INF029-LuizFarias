@@ -20,6 +20,8 @@
 // Última atualização: 07/05/2021
 
 // #################################################
+#include <locale.h> //necessário para usar setlocale
+
 #ifndef TRABALHO1_LUIZFARIAS20212160056_H
 #define TRABALHO1_LUIZFARIAS20212160056_H
 

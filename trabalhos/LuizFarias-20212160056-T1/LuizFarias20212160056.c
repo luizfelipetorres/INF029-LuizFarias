@@ -27,6 +27,7 @@
 #include <string.h>
 
 
+
 /*
 ## função utilizada para testes  ##
 
@@ -235,10 +236,6 @@ Compara comparaNumeros(int n1, int n2){
     4 -> datainicial > datafinal
     Caso o cálculo esteja correto, os atributos qtdDias, qtdMeses e qtdAnos devem ser preenchidos com os valores correspondentes.
  */
-
-
-
-
 DiasMesesAnos q2(char datainicial[], char datafinal[])
 {
 
@@ -375,14 +372,38 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
  @objetivo
     Pesquisar quantas vezes um determinado caracter ocorre em um texto
  @entrada
-    uma string texto, um caracter c e um inteiro que informa se é uma pesquisa Case Sensitive ou não. Se isCaseSensitive = 1, a pesquisa deve considerar diferenças entre maiúsculos e minúsculos.
+    uma string texto, um caracter c e um inteiro que informa se é uma pesquisa Case Sensitive ou não. 
+        Se isCaseSensitive = 1, a pesquisa deve considerar diferenças entre maiúsculos e minúsculos.
         Se isCaseSensitive != 1, a pesquisa não deve  considerar diferenças entre maiúsculos e minúsculos.
  @saida
     Um número n >= 0.
  */
 int q3(char *texto, char c, int isCaseSensitive)
 {
-    int qtdOcorrencias = -1;
+    int qtdOcorrencias = 0;
+    int len = strlen(texto);
+    char cCase = c;
+
+    if (isCaseSensitive != 1){
+        if ((c >= 65) && (c <= 90)){
+            cCase -= ('A' - 'a');
+        }else if ((c >= 97) && (c <= 122)){
+            cCase += ('A' - 'a');
+        }
+        /* printf("\nOriginal: %c (%d)\nCase: %c (%d)\nIsCaseSensitive: %d\nRetorno: ",
+            c,
+            c, 
+            cCase, 
+            cCase, 
+            isCaseSensitive
+        ); //debug*/
+    }
+    
+    for (int i = 0; i < len; i++){
+        if (c == texto[i] || ((cCase == texto[i]) && (isCaseSensitive != 1))){
+            qtdOcorrencias++;
+        }
+    }
 
     return qtdOcorrencias;
 }
@@ -392,10 +413,19 @@ int q3(char *texto, char c, int isCaseSensitive)
  @objetivo
     Pesquisar todas as ocorrências de uma palavra em um texto
  @entrada
-    uma string texto base (strTexto), uma string strBusca e um vetor de inteiros (posicoes) que irá guardar as posições de início e fim de cada ocorrência da palavra (strBusca) no texto base (texto).
+    uma string texto base (strTexto), 
+    uma string strBusca 
+    um vetor de inteiros (posicoes) que irá guardar as posições de início e fim de cada ocorrência da palavra (strBusca) 
+        no texto base (texto).
  @saida
     Um número n >= 0 correspondente a quantidade de ocorrências encontradas.
-    O vetor posicoes deve ser preenchido com cada entrada e saída correspondente. Por exemplo, se tiver uma única ocorrência, a posição 0 do vetor deve ser preenchido com o índice de início do texto, e na posição 1, deve ser preenchido com o índice de fim da ocorrencias. Se tiver duas ocorrências, a segunda ocorrência será amazenado nas posições 2 e 3, e assim consecutivamente. Suponha a string "Instituto Federal da Bahia", e palavra de busca "dera". Como há uma ocorrência da palavra de busca no texto, deve-se armazenar no vetor, da seguinte forma:
+    O vetor posicoes deve ser preenchido com cada entrada e saída correspondente. 
+    Por exemplo, se tiver uma única ocorrência, 
+        a posição 0 do vetor deve ser preenchido com o índice de início do texto, 
+        e na posição 1, deve ser preenchido com o índice de fim da ocorrencias. 
+    Se tiver duas ocorrências, a segunda ocorrência será amazenado nas posições 2 e 3, 
+        e assim consecutivamente. Suponha a string "Instituto Federal da Bahia", e palavra de busca "dera". 
+        Como há uma ocorrência da palavra de busca no texto, deve-se armazenar no vetor, da seguinte forma:
         posicoes[0] = 13;
         posicoes[1] = 16;
         Observe que o índice da posição no texto deve começar ser contado a partir de 1.
@@ -404,7 +434,39 @@ int q3(char *texto, char c, int isCaseSensitive)
  */
 int q4(char *strTexto, char *strBusca, int posicoes[30])
 {
-    int qtdOcorrencias = -1;
+    int qtdOcorrencias = 0;
+    int inicio = 0, fim = 0;
+    int lenTexto = strlen(strTexto);
+    int lenBusca = strlen(strBusca);
+
+
+
+    printf("lenBusca: %d\nlenTexto: %d\n", lenBusca, lenTexto);
+
+    for (int i = 0, j = 0; i <= lenTexto; i++){
+        if (strTexto[i] == strBusca[j]){
+            j++;
+            if (j == lenBusca){
+                inicio = qtdOcorrencias * 2;
+                fim = (qtdOcorrencias * 2) + 1;
+                
+                posicoes[inicio] = i - lenBusca + 2;
+                posicoes[fim] = i + 1;
+                //printf("\ninicio %d, fim %d\n", posicoes[inicio], posicoes[fim]);
+                qtdOcorrencias++;
+                j = inicio = fim = 0;
+            }
+            
+        }else{
+            j = 0;
+        }
+        printf("%d %c %d\n", i, strTexto[i], strTexto[i]);
+    }
+    printf("\n");
+    for (int i = 0; posicoes[i] != -1; i++){
+        printf("%d ", posicoes[i]);
+    }
+    printf("\n");
 
     return qtdOcorrencias;
 }
