@@ -49,6 +49,7 @@ typedef enum compara {
     F_MAIOR = 2
 } Compara;
 
+int encontraGrandeza(int numero);
 Compara comparaNumeros(int n1, int n2);
 int anoBissexto(int *ano); //Retorna 1 se for bissexto e 0 zero se não for
 int somar(int x, int y); //função utilizada para testes
