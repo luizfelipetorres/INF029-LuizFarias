@@ -1,0 +1,1 @@
+gcc *.c controler/*.c global/*.c model/*.c view/*.c -o q8
