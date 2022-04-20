@@ -8,7 +8,7 @@ echo "Iniciando compilação..."
 echo $lin
 
 
-gcc q7.c controller/*.c view/*.c model/*.c -o q7
+gcc q7.c controller/*.c view/*.c model/*.c global/*.c -o q7
 echo $lin
 echo  "Digite: 1 para rodar ou q para sair: "
 read var
