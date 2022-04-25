@@ -6,6 +6,7 @@
   #include <stdio.h>
   #include <stdlib.h>
   #include <unistd.h>
+  #include <locale.h>
 
 //Constantes
   #define ROW 10

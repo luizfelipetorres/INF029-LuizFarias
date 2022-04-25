@@ -1,1 +1,7 @@
-gcc *.c controler/*.c global/*.c model/*.c view/*.c -o q8
+gcc *.c global/*.c view/*.c -o q8
+
+# controler/*.c model/*.c
+
+pause()
+
+./q8

@@ -1,6 +1,11 @@
 #ifndef __OBJECTS_H
   #define __OBJECTS_H
 
+  #define TOTAL_BOATS 5
+  #define BOAT4 1
+  #define BOAT3 1
+  #define BOAT1 1
+  #define BOAT2 (TOTAL_BOATS - BOAT4 - BOAT3 - BOAT1)
 
 /*Struct ponto
 Deve ter ponteiros para os 4 lados
@@ -9,11 +14,22 @@ Deve ter ponteiros para os 4 lados
   Conter um char com N, X, O
 
 */
+
+  typedef enum tpValue{
+    V=' ',  //Espaço vazio
+    N='N',  //Navio posicionado
+    O='O',  //Navio abatido
+    X='X'   //Tiro inválido
+  } Value;
+
   typedef struct ponto{
-    
+    Value value;
     struct ponto* left;
     struct ponto* right;
     struct ponto* top;
     struct ponto* down;
   } Ponto;
+
+
+  
 #endif
