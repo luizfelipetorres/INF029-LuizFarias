@@ -2,7 +2,7 @@
   #define __CONTROLER_H
 
   //Funções
-  Ponto *criarPonto();
+  Ponto* criarPonto();
 
 
 #endif
