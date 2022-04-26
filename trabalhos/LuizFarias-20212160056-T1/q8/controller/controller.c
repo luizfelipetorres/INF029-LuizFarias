@@ -3,6 +3,7 @@
 #include "../view/map.h"
 #include "../view/menu.h"
 #include "controller.h"
+#include "../global/validation.h"
 
 Ponto criarPonto(){
   Ponto p;
@@ -64,36 +65,40 @@ void configuraTabuleiro(Player* p){
   int validar = 0;
   int op;
   int* iPointer;
+  int linha;
+  int coluna;
   char posicao[2];
+  int left, right, top, down;
+  Ponto* inicio;
+  Ponto* fim;
 
 
-  //Repetir enquanto ainda houver barcos
+  //Repetir enquanto ainda houver barcos para colocar no mapa
   do{
-    header();
-    printEmptyMap(p);
-    imprimirDadosPlayer(p);
 
     //Laço para escolher o tamanho do barco e atribuir a quantidade a um ponteiro
+    imprimirMapaDados(p);
     do{
-      printf("\nEscolha o tamanho do barco que você quer inserir: \n\n-> ");
-      scanf(" %d", &op);
+      printf("Escolha o tamanho do barco que você quer inserir: \n\n-> ");
+      scanf(" %1d", &op);
   
       iPointer = NULL;
       switch(op){
         case 4:
-            iPointer = p->boat4 > 0 ? p->boat4: NULL;
+            iPointer = p->boat4 > 0 ? &p->boat4: NULL;
           break;
         case 3:
-            iPointer = p->boat3 > 0 ? p->boat3: NULL;
+            iPointer = p->boat3 > 0 ? &p->boat3: NULL;
           break;
         case 2:
-            iPointer = p->boat2 > 0 ? p->boat2: NULL;
+            iPointer = p->boat2 > 0 ? &p->boat2: NULL;
           break;
         case 1:
-            iPointer = p->boat1 > 0 ? p->boat1: NULL;
+            iPointer = p->boat1 > 0 ? &p->boat1: NULL;
           break;
           default:
-            printf("Tamanho do barco inválido!");
+            imprimirMapaDados(p);
+            printf("Tamanho do barco inválido!\n");
             break;
       }
       
@@ -101,11 +106,116 @@ void configuraTabuleiro(Player* p){
     }while(validar == 0);
 
     //Laço para escolher a posição inicial do barco
+    imprimirMapaDados(p);
     do{
-      printf("Escolha a posição inicial (linha e coluna)do seu barco de tamanho %d\n\n-> ", op);
+      printf("Escolha a posição inicial do seu barco de tamanho %d\n(linha de 1 a 10 e coluna de A a J)\n\n-> ", op);
       scanf(" %2[^\n]", posicao);
+      validar = validarInput(posicao, &linha, &coluna);
 
+      if (validar == 0){
+        imprimirMapaDados(p);
+        printf("Opção inválida!\n");
+      }
     }while(validar == 0);
 
+
+    /*
+      Verificar se já existe algum barco no local pelo ponteiro
+
+    */
+    if (p->tabuleiro[linha][coluna].prox != NULL)
+      printf("Já existe um barco nesse local!\n");
+    else{
+      p->tabuleiro[linha][coluna].value = '0';
+
+      //Definir se é possível colocar o barco na posição
+      left = (coluna - op ) < 0     ? 0 : coluna - op + 1;
+      right = (coluna + op - 1) > 9 ? 0 : coluna + op - 1;
+      top = (linha - op) < 0        ? 0 : linha - op + 1;
+      down = (linha + op - 1) > 9   ? 0 : linha + op - 1;
+
+
+      if (left)
+        for(int i = coluna - 1; i >= left; i--)
+          p->tabuleiro[linha][i].value = '1';
+
+      if (right)
+        for (int i = coluna + 1; i <= right; i++)
+          p->tabuleiro[linha][i].value = '2';
+
+      if (top)
+        for (int i = linha - 1; i >= top; i--)
+          p->tabuleiro[i][coluna].value = '3';
+          
+      if (down)
+        for (int i = linha + 1; i <= down; i++)
+          p->tabuleiro[i][coluna].value = '4';
+
+      imprimirMapaDados(p);
+      printf("\nO seu barco iniciará no 0 e irá até uma das extremidades");
+      printf("\nEscolha uma das extremidades:\n\n-> ");
+      scanf(" %1c", &op);
+
+/*       Ponto* aux;
+      for (int i = 0; i < 10; i++){
+        for (int j = 0; j < 10; j++){
+          p->tabuleiro[i][j].prox = p->tabuleiro[i][j].value = op ? 
+        }
+      } */
+
+
+
+      
+      
+
+/* 
+      printf("%d %d %d %d", left, right, top, down);
+      getchar();
+      getchar();
+ */
+    }
+
   }while(p->tboats > 0); 
+}
+
+int preencherPossibilidades(int linha, int coluna, int left, int right, int top, int down, Player* p){
+
+}
+
+int preencheHorizontal(int inicio, int *fim, int incremento, Player* p){
+  int tipo;
+  
+
+  if (fim){
+    for(int i = inicio + incremento; i >= fim; i = i + incremento){
+      if (p->tabuleiro[inicio][i].prox != NULL){
+        *fim = 0;
+        break;
+      }
+      p->tabuleiro[inicio][i].value = '1';
+    }
+
+    if (!fim)
+      for(int i = inicio + incremento; i >= fim; i = i + incremento)
+        p->tabuleiro[inicio][i].value = ' ';
+  }
+  
+}
+
+int verificarPonteiros(int inicio, int fim, int horizontal, Player* p){
+  int incremento = (fim - inicio) > 0 ? 1 : -1;
+  
+  if (horizontal){
+    for (int i = inicio + incremento; i != fim; i = i + incremento){
+      if (p->tabuleiro[inicio][i].prox != NULL)
+        return 0;
+    }
+  }else{
+    for (int i = inicio + incremento; i != fim; i = i + incremento){
+      if (p->tabuleiro[i][inicio].prox != NULL)
+        return 0;
+    }
+  }
+  return 1;
+
 }

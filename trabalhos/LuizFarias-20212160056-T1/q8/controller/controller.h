@@ -10,5 +10,6 @@ Player* criaPlayer(ePlayer n);
 
 void configuraTabuleiro(Player* p);
 
+int preencheBarco(int inicio, int fim, int incremento, Player* p);
 
 #endif

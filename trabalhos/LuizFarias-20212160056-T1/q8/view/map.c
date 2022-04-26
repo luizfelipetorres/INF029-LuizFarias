@@ -1,4 +1,5 @@
 #include "../global/util.h"
+#include "menu.h"
 
 void printEmptyMap(Player* p){
   printf("\n");
@@ -16,7 +17,7 @@ void printEmptyMap(Player* p){
     }
 
     //Imprimir indice da linha
-    printf("%2d - ", i+1);
+    printf("%2d - ", i);
     for (int j = 0; j < 10; j++)
       printf("[ %c ] ", p->tabuleiro[i][j].value);
     printf("\n");
@@ -25,11 +26,17 @@ printf("\n");
 }
 
 int imprimirDadosPlayer(Player* p){
-  printf("Total de barcos: \t\t%d\n", p->tboats);
+  printf("\nTotal de barcos: \t%d\n", p->tboats);
   printf("Barco de tamanho 4: \t%d\n", p->boat4);
   printf("Barco de tamanho 3: \t%d\n", p->boat3);
   printf("Barco de tamanho 2: \t%d\n", p->boat2);
-  printf("Barco de tamanho 1: \t%d\n", p->boat1);
+  printf("Barco de tamanho 1: \t%d\n\n", p->boat1);
 
   return p->tboats;
+}
+
+void imprimirMapaDados(Player* p){
+    header();
+    printEmptyMap(p);
+    imprimirDadosPlayer(p);
 }

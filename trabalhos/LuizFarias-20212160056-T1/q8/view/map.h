@@ -5,5 +5,6 @@ void printEmptyMap(Player* p);
 
 int imprimirDadosPlayer(Player* p);
 
+void imprimirMapaDados(Player* p);
 
 #endif
