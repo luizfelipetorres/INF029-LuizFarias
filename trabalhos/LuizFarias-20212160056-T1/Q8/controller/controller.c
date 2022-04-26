@@ -1,6 +1,7 @@
 #include "../global/util.h"
 #include "../model/objects.h"
 #include "../view/map.h"
+#include "../view/menu.h"
 #include "controller.h"
 
 Ponto criarPonto(){
@@ -39,15 +40,8 @@ void iniciarPartida(){
           Criar a lista encadeada na diração selecionada
 */
 
-  
-  do{
-    header()
-    printEmptyMap(p1);
-    imprimirDadosPlayer(p1);
-    printf("\nEscolha o tamanho do barco que você quer inserir: ");
-    scanf(" %d", &op);
-    
-  }while(p1->tboats > 0);
+  configuraTabuleiro(p1)
+
   
   
 }
@@ -70,3 +64,35 @@ Player* criaPlayer(ePlayer n){
   return p;
 }
 
+void configuraTabuleiro(Player* p){
+  int validar = 0;
+
+  //Repetir enquanto ainda houver barcos
+  do{
+    header();
+    printEmptyMap(p);
+    imprimirDadosPlayer(p);
+
+    do{
+      printf("\nEscolha o tamanho do barco que você quer inserir: \n\n-> ");
+      scanf(" %d", &op);
+  
+      switch(op){
+        case 4:
+
+          //Transformar em função
+          if (p->boat4 == 0){
+            printf("Barco inválido! Selecione outra opção.");      
+            validar = 0;
+          else{
+            validar = 1;
+            p->boat4--;
+            p->tboats--;
+          }
+              
+          }
+          break;
+      }
+    }while(validar == 0);
+  }while(p->tboats > 0); 
+}
