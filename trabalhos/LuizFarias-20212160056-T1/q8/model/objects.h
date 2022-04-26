@@ -29,10 +29,7 @@ Deve ter ponteiros para os 4 lados
 
   typedef struct ponto{
     Value value;
-    struct ponto* left;
-    struct ponto* right;
-    struct ponto* top;
-    struct ponto* down;
+    struct ponto* prox;
   } Ponto;
 
   typedef struct player{

@@ -8,10 +8,7 @@ Ponto criarPonto(){
   Ponto p;
   //p = malloc(sizeof(Ponto));
   p.value = ' ';
-  p.left = NULL;
-  p.right = NULL;
-  p.top = NULL;
-  p.down = NULL;
+  p.prox = NULL;
 
   return p;
 }
@@ -20,7 +17,6 @@ void iniciarPartida(){
   Player* p1;
   Player* p2;
 
-  int op;
   p1 = criaPlayer(1);
   p2 = criaPlayer(2);
   
@@ -40,7 +36,7 @@ void iniciarPartida(){
           Criar a lista encadeada na diração selecionada
 */
 
-  configuraTabuleiro(p1)
+  configuraTabuleiro(p1);
 
   
   
@@ -66,6 +62,10 @@ Player* criaPlayer(ePlayer n){
 
 void configuraTabuleiro(Player* p){
   int validar = 0;
+  int op;
+  int* iPointer;
+  char posicao[2];
+
 
   //Repetir enquanto ainda houver barcos
   do{
@@ -73,26 +73,39 @@ void configuraTabuleiro(Player* p){
     printEmptyMap(p);
     imprimirDadosPlayer(p);
 
+    //Laço para escolher o tamanho do barco e atribuir a quantidade a um ponteiro
     do{
       printf("\nEscolha o tamanho do barco que você quer inserir: \n\n-> ");
       scanf(" %d", &op);
   
+      iPointer = NULL;
       switch(op){
         case 4:
-
-          //Transformar em função
-          if (p->boat4 == 0){
-            printf("Barco inválido! Selecione outra opção.");      
-            validar = 0;
-          else{
-            validar = 1;
-            p->boat4--;
-            p->tboats--;
-          }
-              
-          }
+            iPointer = p->boat4 > 0 ? p->boat4: NULL;
           break;
+        case 3:
+            iPointer = p->boat3 > 0 ? p->boat3: NULL;
+          break;
+        case 2:
+            iPointer = p->boat2 > 0 ? p->boat2: NULL;
+          break;
+        case 1:
+            iPointer = p->boat1 > 0 ? p->boat1: NULL;
+          break;
+          default:
+            printf("Tamanho do barco inválido!");
+            break;
       }
+      
+      validar = (iPointer != NULL) ? 1: 0;
     }while(validar == 0);
+
+    //Laço para escolher a posição inicial do barco
+    do{
+      printf("Escolha a posição inicial (linha e coluna)do seu barco de tamanho %d\n\n-> ", op);
+      scanf(" %2[^\n]", posicao);
+
+    }while(validar == 0);
+
   }while(p->tboats > 0); 
 }

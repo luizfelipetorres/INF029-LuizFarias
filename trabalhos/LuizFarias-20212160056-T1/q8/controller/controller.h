@@ -8,4 +8,7 @@
 
 Player* criaPlayer(ePlayer n);
 
+void configuraTabuleiro(Player* p);
+
+
 #endif

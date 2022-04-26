@@ -13,8 +13,8 @@ int validarInput(char *input){
         input[0] -= ('a' - 'A');
 
     if (
-        (input[0] < 'A' || input[0] > 'C') ||
-        (input[1] < '1' || input[1] > '3')    
+        (input[0] < 'A' || input[0] > 'J') ||
+        (input[1] < '1' || input[1] > '10')    
     )
         return 0;
     input[0] -= 'A';
