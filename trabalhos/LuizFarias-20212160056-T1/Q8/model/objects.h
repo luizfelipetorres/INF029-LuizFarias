@@ -4,7 +4,7 @@
   #define TOTAL_BOATS 5
   #define BOAT4 1
   #define BOAT3 1
-  #define BOAT1 1
+  #define BOAT1 3
   #define BOAT2 (TOTAL_BOATS - BOAT4 - BOAT3 - BOAT1)
 
 /*Struct ponto
@@ -22,6 +22,11 @@ Deve ter ponteiros para os 4 lados
     X='X'   //Tiro inválido
   } Value;
 
+  typedef enum enumPlayer{
+    P1 = 1,
+    P2 = 2
+  } ePlayer;
+
   typedef struct ponto{
     Value value;
     struct ponto* left;
@@ -30,6 +35,15 @@ Deve ter ponteiros para os 4 lados
     struct ponto* down;
   } Ponto;
 
+  typedef struct player{
+    ePlayer value;
+    int tboats;
+    int boat4;
+    int boat3;
+    int boat2;
+    int boat1;
+    Ponto tabuleiro[10][10];
+  } Player;
 
   
 #endif

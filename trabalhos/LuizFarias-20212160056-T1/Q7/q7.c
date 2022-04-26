@@ -3,7 +3,7 @@
 #include "view/view.h"
 #include "controller/controller.h"
 #include "global/validation.h"
-
+//
 void main(){
   Placar* p1p2;
   int vencedor;

@@ -2,7 +2,10 @@
   #define __CONTROLER_H
 
   //Funções
-  Ponto* criarPonto();
+  Ponto criarPonto();
+    
+  void iniciarPartida();
 
+Player* criaPlayer(ePlayer n);
 
 #endif
