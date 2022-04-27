@@ -9,7 +9,7 @@ Ponto criarPonto(){
   Ponto p;
   //p = malloc(sizeof(Ponto));
   p.value = ' ';
-  p.prox = NULL;
+  p.barco = 0;
 
   return p;
 }
@@ -31,15 +31,18 @@ void iniciarPartida(){
       Se for zero
         pedir para inserir outro barco
       Se não for zero
+
         Barco escolhido é decrementado
         Imprimir barco com opções T D L R para escolha da posição
         Pedir para escolher entre T D L R
           Criar a lista encadeada na diração selecionada
 */
 
-  configuraTabuleiro(p1);
-
+  //configuraTabuleiro(p1);
+  //configuraTabuleiro(p2);
   
+  printMaps(p1, p2);
+  printf("Vez do jogador x: ");
   
 }
 
@@ -92,6 +95,7 @@ void configuraTabuleiro(Player* p){
           break;
         case 1:
             iPointer = p->boat1 > 0 ? &p->boat1: NULL;
+
           break;
           default:
             imprimirMapaDados(p);
@@ -113,46 +117,53 @@ void configuraTabuleiro(Player* p){
         imprimirMapaDados(p);
         printf("Opção inválida!\n");
       }
+
+      if (p->tabuleiro[linha][coluna].barco != 0){
+        imprimirDadosPlayer(p);
+        printf("Já existe um barco nesse local!\n");
+        validar = 0;
+      }
     }while(validar == 0);
 
+    //Se for um barco de uma posição
+    if(op == 1){
+      p->tabuleiro[linha][coluna].value = 'N';
+      p->tabuleiro[linha][coluna].barco = 1;
 
-    /*
-      Verificar se já existe algum barco no local pelo ponteiro
-
-    */
-    if (p->tabuleiro[linha][coluna].prox != NULL)
-      printf("Já existe um barco nesse local!\n");
-    else{
+    //Se tiver mais de uma posição
+    }else{
       p->tabuleiro[linha][coluna].value = '0';
 
       //Definir se é possível colocar o barco na posição
-      left = (coluna - op ) < 0     ? -1 : coluna - op + 1;
+      left = (coluna - op + 1) < 0     ? -1 : coluna - op + 1;
       right = (coluna + op - 1) > 9 ? -1 : coluna + op - 1;
-      top = (linha - op) < 0        ? -1 : linha - op + 1;
+      top = (linha - op + 1) < 0        ? -1 : linha - op + 1;
       down = (linha + op - 1) > 9   ? -1 : linha + op - 1;
 
       /*
       Percorrer o vetor e verificar se existe um barco no caminho
         Se existir, não permitir colocar o barco nessa posição
 */      
-      left = verificarPonteiros(linha, left, LEFT, p);
-      right = verificarPonteiros(linha, right, RIGHT, p);
-      top = verificarPonteiros(coluna, top, TOP, p);
-      down = verificarPonteiros(coluna, down, DOWN, p);
+      left = verificarPonteiros(linha, coluna, left, LEFT, p);
+      right = verificarPonteiros(linha, coluna, right, RIGHT, p);
+      top = verificarPonteiros(linha, coluna, top, TOP, p);
+      down = verificarPonteiros(linha, coluna, down, DOWN, p);
 
       imprimirMapaDados(p);
+      printf("%d %d %d %d", left, right, top, down);
+      printf("\nlinha: %d, coluna: %d", linha, coluna);
       printf("\nO seu barco iniciará no 0 e irá até uma das extremidades");
       printf("\nEscolha uma das extremidades:\n\n-> ");
       char c;
       scanf(" %1c", &c);
 
-      if(c == LEFT) criaLista(linha, left, LEFT, p);
-      else if (c == RIGHT) criaLista(linha, right, RIGHT, p);
-      else if (c == TOP) criaLista(coluna, top, TOP, p);
-      else if (c == DOWN) criaLista(coluna, down, DOWN, p);
+      if(c == LEFT) criarBarco(linha, coluna, left, LEFT, p);
+      else if (c == RIGHT) criarBarco(linha, coluna, right, RIGHT, p);
+      else if (c == TOP) criarBarco(linha, coluna, top, TOP, p);
+      else if (c == DOWN) criarBarco(linha, coluna, down, DOWN, p);
       else printf("Valor inválido!");
+      limparMapa(p, 'N');
 
-      //Preencher todos com N e cria ligação na lista
       //Verificar se 'c' é válido (!= -1)
     }
     
@@ -161,63 +172,49 @@ void configuraTabuleiro(Player* p){
   }while(p->tboats > 0); 
 }
 
-void criaLista(int inicio, int fim, Direcao direction, Player* p){
-  int i = inicio;
+void criarBarco(int linha, int coluna, int fim, Direcao direction, Player* p){
+  int i = (direction == LEFT || direction == RIGHT) ? coluna : linha;
   
   //Definir se o incremento será positivo ou negativo
-  int incremento = (fim - inicio) > 0 ? 1 : -1;
+  //int incremento = (fim - inicio) > 0 ? 1 : -1;
+  int incremento = (direction == LEFT || direction == TOP) ? -1 : 1;
   
 /*Definindo ponteiros para os valores iniciais e finais
   parametro direction define o sentido do descolamento  
 */
-  int* linha = (direction == RIGHT || direction == LEFT)   ? &inicio : &i;
-  int* coluna = (direction == RIGHT || direction == LEFT)  ? &i : &inicio;
+  int* pLinha = (direction == RIGHT || direction == LEFT)   ? &linha : &i;
+  int* pColuna = (direction == RIGHT || direction == LEFT)  ? &i : &coluna;
   
-  Ponto* pInicio = &p->tabuleiro[*linha][*coluna];
-  Ponto* ant = &p->tabuleiro[*linha][*coluna];
-
-  i = fim;
-  Ponto* pFim = &p->tabuleiro[*linha][*coluna];
-  
-  Ponto* atual;
-
-  //Definir inicio
-  pInicio->value = 'N';
-  pInicio->prox = pFim;
-
-  //Definir meio
-  for (i = inicio + incremento; i != fim; i += incremento){
-    p->tabuleiro[*linha][*coluna].prox = ant;
-    p->tabuleiro[*linha][*coluna].value = 'N';
-    ant = p->tabuleiro[*linha][*coluna].prox;
+  if (fim != -1){
+    for(; i != (fim + incremento); i += incremento){
+      p->tabuleiro[*pLinha][*pColuna].value = 'N';
+      p->tabuleiro[*pLinha][*pColuna].barco = 1;
+    }
   }
-
-  //Definir fim
-  pFim->value = 'N';
-  pFim->prox = ant; 
 }
 
-int verificarPonteiros(int inicio, int fim, Direcao direction, Player* p){
-  int i;
+
+int verificarPonteiros(int linha, int coluna, int fim, Direcao direction, Player* p){
+  int i = (direction == LEFT || direction == RIGHT) ? coluna : linha;
 
   //Definir se o incremento será positivo ou negativo
-  int incremento = (fim - inicio) > 0 ? 1 : -1;
-  
+/*   int incremento = (fim - inicio) > 0 ? 1 : -1;
+ */  
+
+  int incremento = (direction == LEFT || direction == TOP) ? -1 : 1;
+
 /*Definindo ponteiros para os valores iniciais e finais
   parametro direction define o sentido do descolamento  
 */
-  int* linha = (direction == RIGHT || direction == LEFT) ? &inicio : &i;
-  int* coluna = (direction == RIGHT || direction == LEFT) ? &i : &inicio;  
+  int* pLinha  = (direction == RIGHT || direction == LEFT) ? &linha : &i;
+  int* pColuna = (direction == RIGHT || direction == LEFT) ? &i : &coluna;  
 
   if (fim != -1){
-    for(i = inicio; i != fim; i = i + incremento){
-      if (p->tabuleiro[*linha][*coluna].prox != NULL){
+    for(; i != fim; i += incremento){
+      if (p->tabuleiro[*pLinha][*pColuna].barco != 0)
         return -1;
-        break;
-      }
     }
-    if (fim != -1) 
-      p->tabuleiro[*linha][*coluna].value = direction;
+    p->tabuleiro[*pLinha][*pColuna].value = direction;
   }
   return fim;
 }

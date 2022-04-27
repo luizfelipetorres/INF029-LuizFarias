@@ -29,7 +29,7 @@ Deve ter ponteiros para os 4 lados
 
   typedef struct ponto{
     char value;
-    struct ponto* prox;
+    int barco;
   } Ponto;
 
   typedef struct player{

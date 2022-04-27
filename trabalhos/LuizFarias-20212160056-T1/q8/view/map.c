@@ -1,10 +1,9 @@
 #include "../global/util.h"
 #include "menu.h"
 
-void printEmptyMap(Player* p){
+void printMap(Player* p){
   printf("\n");
   int col = 'A';
-  
   for(int i = 0; i < 10; i++){
 
     //Imprimir indice das colunas
@@ -35,8 +34,43 @@ int imprimirDadosPlayer(Player* p){
   return p->tboats;
 }
 
+void imprimirLinha(){
+  for (int i = 0; i < 64; i++)
+    printf("=");
+  printf("\n");
+}
+
+void imprimirPlayer(Player* p){
+  imprimirLinha();
+  printf("|%27cPlayer %d%27c|\n", ' ', p->value, ' ');
+  imprimirLinha();
+}
+
 void imprimirMapaDados(Player* p){
-    header();
-    printEmptyMap(p);
+    //header();
+    system(CLEAR);
+    imprimirPlayer(p);
+    printMap(p);
     imprimirDadosPlayer(p);
 }
+
+void limparMapa(Player* p, char exceto){
+  for (int i = 0; i < 10; i++){
+    for (int j = 0; j < 10; j++){
+      if (p->tabuleiro[i][j].value != exceto)
+        p->tabuleiro[i][j].value = ' ';
+    }
+  }
+}
+
+void printMaps(Player* p1, Player* p2){
+  system(CLEAR);
+  imprimirPlayer(p1);
+  printMap(p1);
+  printf("\n\n");
+  imprimirPlayer(p2);
+  printMap(p2);
+  printf("\n\n");
+
+}
+
