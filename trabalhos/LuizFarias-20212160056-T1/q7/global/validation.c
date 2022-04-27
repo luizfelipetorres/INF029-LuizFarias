@@ -5,9 +5,7 @@ void charToUpper(char *c){
 
 }
 
-int validarInput(char *input){
-    int letra = 0, numero = 0;
-    int validation = 0;
+int validarInput(char input[2]){
 
     if (input[0] >= 'a' && input[0] <= 'c')
         input[0] -= ('a' - 'A');

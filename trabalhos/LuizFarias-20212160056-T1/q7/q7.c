@@ -4,7 +4,7 @@
 #include "controller/controller.h"
 #include "global/validation.h"
 //
-void main(){
+int main(){
   Placar* p1p2;
   int vencedor;
   char op;
@@ -12,11 +12,6 @@ void main(){
   imprimeAbertura();
 
   p1p2 = inicializaPlacar();
-
-/*   p1p2 = malloc(sizeof(Placar));
-  p1p2->player1 = 0;
-  p1p2->player2 = 0;
-  p1p2->empate = 0; */
 
   do{
     vencedor= iniciarPartida(p1p2);
@@ -28,4 +23,6 @@ void main(){
     scanf(" %1[^\n]", &op); 
 
   }while(op != 'n' || op != 'N');
+
+  return 0;
 }

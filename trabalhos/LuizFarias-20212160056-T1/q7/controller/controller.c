@@ -8,8 +8,7 @@ int percorreLista(Ponto** p, int posicao, Busca b){
 
 
   atual = p[posicao]; 
-  /* printf("b: %d\n", b);
-  printf("inicial: %d\n", atual->posicao); */
+
   do{
     anterior = atual;
     
@@ -20,9 +19,7 @@ int percorreLista(Ponto** p, int posicao, Busca b){
       case D2: atual = atual->d2; break;
     }
 
-/*     printf("%d: %c = %c ? %d\n",atual->posicao, anterior->player, atual->player, anterior->player == atual->player);
-    getchar();
- */    if (anterior == atual) return 0;
+    if (anterior == atual) return 0;
     if(anterior->player != atual->player) return 0; 
     
     //atual = atual->h;
@@ -46,6 +43,8 @@ void configuraListas(Ponto** v){
     int horizontal, vertical, diagonal1, diagonal2;
 
     for (int i = 0; i < TAM; i++){
+
+        //Definir regras para lista encadeada
         vertical = (i + 3) > 8 ? (i - 6) : (i + 3);
         horizontal = (i / 3 ) < ((i + 1) / 3) ? (i - 2) : (i + 1);
 
@@ -55,25 +54,12 @@ void configuraListas(Ponto** v){
         diagonal2 = ((i >= 2) && (i <= 6) && (i % 2 == 0)) ? (i + 2) : -1;
         diagonal2 = (diagonal2 == 8) ? 2 : diagonal2;
 
-        //printf("h: %d\nv: %d\n", horizontal, vertical);
-
         v[i]->player = ' ';
         v[i]->posicao = i;
         v[i]->h = v[horizontal];
         v[i]->v = v[vertical];
         v[i]->d1 = (diagonal1 == -1) ? v[i]: v[diagonal1];
         v[i]->d2 = (diagonal2 == -1) ? v[i]: v[diagonal2];
-
-     /*
-    printf(
-        "\n\ni: %d\nposicao: %d\nh: %d\nv: %d\n d1: %d\n d2: %d\n",
-        i,
-        v[i]->posicao,
-        horizontal,
-        vertical,
-        diagonal1,
-        diagonal2
-    ); //debug */
     } 
 }
 
@@ -122,18 +108,12 @@ void incrementaPlacar(Placar* p1p2, Jogadores j){
 int iniciarPartida(Placar* p1p2){
 Ponto* v[TAM];
   //Placar * p1p2;
-  int horizontal, vertical, diagonal1, diagonal2;
-  int validation;
   char cel[2];
   int posicao = 0;
   char player;
   int op = -1;
+  int jogadas = 0;
 
-
-    /* p1p2 = malloc(sizeof(Placar));
-    p1p2->player1 = 0;
-    p1p2->player2 = 0;
- */
   inicializaVetor(v);
 
   configuraListas(v);
@@ -145,7 +125,6 @@ Ponto* v[TAM];
       //Definir o jogador atual
       if (i % 2 == 0) player = 'X';else player = 'O';
 
-      
       imprimeLogo(p1p2);
       imprimeJogo(v); 
 
@@ -156,11 +135,13 @@ Ponto* v[TAM];
       posicao = cel[0] * 3 + cel[1];
       printf("posicao: %d\n", v[posicao]->posicao);
       op = preenchePonto(v[posicao], player);
+      jogadas++;
 
 
     }while (op != 1);
     
-    vencedor = percorreListas(v, posicao);
+    if (jogadas >= 5)
+      vencedor = percorreListas(v, posicao);
   }
 
   incrementaPlacar(p1p2, vencedor);

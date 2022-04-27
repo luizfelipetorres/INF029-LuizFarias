@@ -2,121 +2,29 @@
 #include "view.h"
 #include "../global/validation.h"
 
-/*
-       1   2   3 
-	A  O | O | X 
-	  __\|___|___
-	B    |O  |   
-	  ___|__\|___
-	C    |   |O  
-	     |   | \ 
-
-       1   2   3 
-	A    | O | X 
-	  ___|___|___
-	B O--|O--|O--   
-	  ___|___|___
-	C    |   |O  
-	     |   |   
-
-
-       1   2   3 
-	A  X | O | X 
-	  _|_|___|___
-	B  X |O  |O     
-	  _|_|___|___
-	C  X |   |O  
-	   | |   |   
-
-printf("                                |                       |                         "); 
-printf("     TTTTTTTTTTTTTTTTTTTTTTTTT  |         IIIII         |    KKKKK    KKKK        ");                                              
-printf("     TTTTTTTTTTTTTTTTTTTTTTTTT  |         IIIII         |    KKKKK   KKKK         ");                                              
-printf("              TTTTTT            |                       |    KKKKK  KKKK          ");                                              
-printf("              TTTTTT            |         IIIII         |    KKKKK KKKK           ");                                             
-printf("              TTTTTT            |         IIIII         |    KKKKKKKK             ");                                            
-printf("              TTTTTT            |         IIIII         |    KKKKKKKKKK           ");                                              
-printf("              TTTTTT            |         IIIII         |    KKKKK  KKKK          ");                                             
-printf("              TTTTTT            |         IIIII         |    KKKKK   KKKK         ");                                            
-printf("              TTTTTT            |         IIIII         |    KKKKK     KKKK       ");                                            
-printf("     =================================================================================");
-printf("     =================================================================================");
-printf("                                |                       |                         "); 
-printf("     TTTTTTTTTTTTTTTTTTTTTTTTT  |         AAAAA         |    KKKKK    KKKK        ");                                              
-printf("     TTTTTTTTTTTTTTTTTTTTTTTTT  |        AAAAAAA        |    KKKKK   KKKK         ");                                              
-printf("              TTTTTT            |       AAAA AAAA       |    KKKKK  KKKK          ");                                              
-printf("              TTTTTT            |      AAAA   AAAA      |    KKKKK KKKK           ");                                             
-printf("              TTTTTT            |     AAAA     AAAA     |    KKKKKKKK             ");                                            
-printf("              TTTTTT            |    AAAAAAAAAAAAAAA    |    KKKKKKKKKK           ");                                              
-printf("              TTTTTT            |   AAAAAAAAAAAAAAAAA   |    KKKKK  KKKK          ");                                             
-printf("              TTTTTT            |  AAAA           AAAA  |    KKKKK   KKKK         ");                                            
-printf("              TTTTTT            | AAAA             AAAA |    KKKKK     KKKK       ");                                            
-printf("     =================================================================================");
-printf("     =================================================================================");
-printf("                                |                       |                         "); 
-printf("     TTTTTTTTTTTTTTTTTTTTTTTTT  |       0000OOOO        |    EEEEEEEEEEEEEEE      ");                                                               
-printf("     TTTTTTTTTTTTTTTTTTTTTTTTT  |      0000  OOOO       |    EEEEEEEEEEEEEEE      ");                                                               
-printf("              TTTTTT            |     0000    OOOO      |    EEEEE                ");                                                     
-printf("              TTTTTT            |    0000      OOOO     |    EEEEE                ");                                                    
-printf("              TTTTTT            |   0000        OOOO    |    EEEEEEEEEE           ");                                                        
-printf("              TTTTTT            |   0000        OOOO    |    EEEEEEEEEE           ");                                                          
-printf("              TTTTTT            |    000O      OOOO     |    EEEEE                ");                                                    
-printf("              TTTTTT            |     0000    OOOO      |    EEEEEEEEEEEEEEE      ");                                                              
-printf("              TTTTTT            |      0000OOOOOO       |    EEEEEEEEEEEEEEE      ");                                                                    
-
-
-
-
-
-
-
-
-
-
-
-*/
-
 void imprimeAbertura(){
-  char l1, l2, l3;
-  l1 = 'X';
-  l2 = 'O';
-  l3 = 'T';
-
-
   limpaTela();
-  printf("                                |                       |                         \n"); 
-  printf("     TTTTTTTTTTTTTTTTTTTTTTTTT  |         IIIII         |    KKKKK    KKKK        \n");                                              
-  printf("     TTTTTTTTTTTTTTTTTTTTTTTTT  |         IIIII         |    KKKKK   KKKK         \n");                                              
-  printf("              TTTTTT            |                       |    KKKKK  KKKK          \n");                                              
-  printf("              TTTTTT            |         IIIII         |    KKKKK KKKK           \n");                                             
-  printf("              TTTTTT            |         IIIII         |    KKKKKKKK             \n");                                            
-  printf("              TTTTTT            |         IIIII         |    KKKKKKKKKK           \n");                                              
-  printf("              TTTTTT            |         IIIII         |    KKKKK  KKKK          \n");                                             
-  printf("              TTTTTT            |         IIIII         |    KKKKK   KKKK         \n");                                            
-  printf("              TTTTTT            |         IIIII         |    KKKKK     KKKK       \n");                                            
-  printf("     =================================================================================\n");
-  printf("                                |                       |                         \n"); 
-  printf("     TTTTTTTTTTTTTTTTTTTTTTTTT  |         AAAAA         |    KKKKK    KKKK        \n");                                              
-  printf("     TTTTTTTTTTTTTTTTTTTTTTTTT  |        AAAAAAA        |    KKKKK   KKKK         \n");                                              
-  printf("              TTTTTT            |       AAAA AAAA       |    KKKKK  KKKK          \n");                                              
-  printf("              TTTTTT            |      AAAA   AAAA      |    KKKKK KKKK           \n");                                             
-  printf("              TTTTTT            |     AAAA     AAAA     |    KKKKKKKK             \n");                                            
-  printf("              TTTTTT            |    AAAAAAAAAAAAAAA    |    KKKKKKKKKK           \n");                                              
-  printf("              TTTTTT            |   AAAAAAAAAAAAAAAAA   |    KKKKK  KKKK          \n");                                             
-  printf("              TTTTTT            |  AAAA           AAAA  |    KKKKK   KKKK         \n");                                            
-  printf("              TTTTTT            | AAAA             AAAA |    KKKKK     KKKK       \n");                                            
-  printf("     =================================================================================\n");
-  printf("                                |                       |                         \n"); 
-  printf("     TTTTTTTTTTTTTTTTTTTTTTTTT  |       0000OOOO        |    EEEEEEEEEEEEEEE      \n");                                                               
-  printf("     TTTTTTTTTTTTTTTTTTTTTTTTT  |      0000  OOOO       |    EEEEEEEEEEEEEEE      \n");                                                               
-  printf("              TTTTTT            |     0000    OOOO      |    EEEEE                \n");                                                     
-  printf("              TTTTTT            |    0000      OOOO     |    EEEEE                \n");                                                    
-  printf("              TTTTTT            |   0000        OOOO    |    EEEEEEEEEE           \n");                                                        
-  printf("              TTTTTT            |   0000        OOOO    |    EEEEEEEEEE           \n");                                                          
-  printf("              TTTTTT            |    000O      OOOO     |    EEEEE                \n");                                                    
-  printf("              TTTTTT            |     0000    OOOO      |    EEEEEEEEEEEEEEE      \n");                                                              
-  printf("              TTTTTT            |      0000OOOOOO       |    EEEEEEEEEEEEEEE      \n"); 
-  //espere(3000);
-  //getchar();
+  printf("\n\n");
+  printf("TTTTTTTTTTT  |      III       |  KKK  KKK      \n");                
+  printf("TTTTTTTTTTT  |                |  KKK KKK       \n");              
+  printf("    TTT      |      III       |  KKKKK         \n");          
+  printf("    TTT      |      III       |  KKKKK         \n");         
+  printf("    TTT      |      III       |  KKK KKK       \n");          
+  printf("    TTT      |      III       |  KKK  KKK      \n");         
+  printf("-----------------------------------------------\n");               
+  printf("TTTTTTTTTTT  |      AAA       |  KKK  KKK      \n");               
+  printf("TTTTTTTTTTT  |     AAAAA      |  KKK KKK       \n");                 
+  printf("    TTT      |    AAA AAA     |  KKKKK         \n");                 
+  printf("    TTT      |   AAA   AAA    |  KKKKK         \n");                   
+  printf("    TTT      |  AAAAAAAAAAA   |  KKK KKK       \n");                   
+  printf("    TTT      | AAA       AAA  |  KKK  KKK      \n");                     
+  printf("-----------------------------------------------\n");               
+  printf("TTTTTTTTTTT  |    OOOOOO      |  EEEEEEEEEE    \n");                              
+  printf("TTTTTTTTTTT  |   OOO  OOO     |  EEE           \n");                     
+  printf("    TTT      |  OOO    OOO    |  EEEEEEE       \n");                         
+  printf("    TTT      |  OOO    OOO    |  EEE           \n");                     
+  printf("    TTT      |   OOO  OOO     |  EEE           \n");                      
+  printf("    TTT      |    OOOOOO      |  EEEEEEEEEE    \n"); 
   imprimeCarregamento();
 }
 
@@ -140,7 +48,7 @@ void imprimeCarregamento(){
             printf("  ");
 
             printf ("%c", 2);
-            espere(1);
+            espere(2);
         }
     }
 }

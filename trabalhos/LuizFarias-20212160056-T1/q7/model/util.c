@@ -1,7 +1,7 @@
 #include "util.h"
 
 void espere(int segundos){
-    if (CLEAR=="cls"){
+    if (strcmp(CLEAR, "cls") == 1){
         sleep(segundos);
     }else{
         usleep(segundos * 1000);
