@@ -15,12 +15,12 @@ Deve ter ponteiros para os 4 lados
 
 */
 
-  typedef enum tpValue{
-    V=' ',  //Espaço vazio
-    N='N',  //Navio posicionado
-    O='O',  //Navio abatido
-    X='X'   //Tiro inválido
-  } Value;
+  typedef enum directions{
+    LEFT = '1',
+    RIGHT = '2',
+    TOP = '3',
+    DOWN = '4'
+  } Direcao;
 
   typedef enum enumPlayer{
     P1 = 1,
@@ -28,7 +28,7 @@ Deve ter ponteiros para os 4 lados
   } ePlayer;
 
   typedef struct ponto{
-    Value value;
+    char value;
     struct ponto* prox;
   } Ponto;
 

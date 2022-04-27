@@ -69,9 +69,6 @@ void configuraTabuleiro(Player* p){
   int coluna;
   char posicao[2];
   int left, right, top, down;
-  Ponto* inicio;
-  Ponto* fim;
-
 
   //Repetir enquanto ainda houver barcos para colocar no mapa
   do{
@@ -134,47 +131,14 @@ void configuraTabuleiro(Player* p){
       top = (linha - op) < 0        ? -1 : linha - op + 1;
       down = (linha + op - 1) > 9   ? -1 : linha + op - 1;
 
-      int i;
-      left = verificarPonteiros(linha, left, 1, p);
-      /* if (left != -1){
-        for(i = coluna; i != left; i--){
-          if (p->tabuleiro[linha][i].prox != NULL){
-            left = -1;
-            break;
-          }
-        }
-        p->tabuleiro[linha][i].value = '1';
-      }  */
-          
-      if (right != -1){
-        for (i = coluna; i != right; i++){
-          if (p->tabuleiro[linha][i].prox != NULL){
-            right = -1;
-            break;  
-          }
-        }
-        p->tabuleiro[linha][i].value = '2';
-      }
-
-      if (top != -1){
-        for (i = linha; i != top; i--){
-          if (p->tabuleiro[i][coluna].prox != NULL){
-            top = -1;
-            break;  
-          }
-        }
-        p->tabuleiro[i][coluna].value = '3';
-      }
-          
-      if (down != -1){
-        for (i = linha; i != down; i++){
-          if (p->tabuleiro[i][coluna].prox != NULL){
-            down = -1;
-            break;  
-          }
-        }
-        p->tabuleiro[i][coluna].value = '4';
-      }
+      /*
+      Percorrer o vetor e verificar se existe um barco no caminho
+        Se existir, não permitir colocar o barco nessa posição
+*/      
+      left = verificarPonteiros(linha, left, LEFT, p);
+      right = verificarPonteiros(linha, right, RIGHT, p);
+      top = verificarPonteiros(coluna, top, TOP, p);
+      down = verificarPonteiros(coluna, down, DOWN, p);
 
       imprimirMapaDados(p);
       printf("\nO seu barco iniciará no 0 e irá até uma das extremidades");
@@ -182,66 +146,78 @@ void configuraTabuleiro(Player* p){
       char c;
       scanf(" %1c", &c);
 
+      if(c == LEFT) criaLista(linha, left, LEFT, p);
+      else if (c == RIGHT) criaLista(linha, right, RIGHT, p);
+      else if (c == TOP) criaLista(coluna, top, TOP, p);
+      else if (c == DOWN) criaLista(coluna, down, DOWN, p);
+      else printf("Valor inválido!");
+
       //Preencher todos com N e cria ligação na lista
       //Verificar se 'c' é válido (!= -1)
-
-     
-
-/* 
-      printf("%d %d %d %d", left, right, top, down);
-      getchar();
-      getchar();
- */
     }
-
+    
+    (*iPointer)--;
+    p->tboats--;
   }while(p->tboats > 0); 
 }
 
-int preencherPossibilidades(int linha, int coluna, int left, int right, int top, int down, Player* p){
-
-}
-
-int preencheHorizontal(int inicio, int *fim, int incremento, Player* p){
-/*   int tipo;
+void criaLista(int inicio, int fim, Direcao direction, Player* p){
+  int i = inicio;
   
+  //Definir se o incremento será positivo ou negativo
+  int incremento = (fim - inicio) > 0 ? 1 : -1;
+  
+/*Definindo ponteiros para os valores iniciais e finais
+  parametro direction define o sentido do descolamento  
+*/
+  int* linha = (direction == RIGHT || direction == LEFT)   ? &inicio : &i;
+  int* coluna = (direction == RIGHT || direction == LEFT)  ? &i : &inicio;
+  
+  Ponto* pInicio = &p->tabuleiro[*linha][*coluna];
+  Ponto* ant = &p->tabuleiro[*linha][*coluna];
 
-  if (fim){
-    for(int i = inicio + incremento; i >= fim; i = i + incremento){
-      if (p->tabuleiro[inicio][i].prox != NULL){
-        *fim = 0;
-        break;
-      }
-      p->tabuleiro[inicio][i].value = '1';
-    }
+  i = fim;
+  Ponto* pFim = &p->tabuleiro[*linha][*coluna];
+  
+  Ponto* atual;
 
-    if (!fim)
-      for(int i = inicio + incremento; i >= fim; i = i + incremento)
-        p->tabuleiro[inicio][i].value = ' ';
+  //Definir inicio
+  pInicio->value = 'N';
+  pInicio->prox = pFim;
+
+  //Definir meio
+  for (i = inicio + incremento; i != fim; i += incremento){
+    p->tabuleiro[*linha][*coluna].prox = ant;
+    p->tabuleiro[*linha][*coluna].value = 'N';
+    ant = p->tabuleiro[*linha][*coluna].prox;
   }
-   */
+
+  //Definir fim
+  pFim->value = 'N';
+  pFim->prox = ant; 
 }
 
-int verificarPonteiros(int inicio, int fim, int horizontal, Player* p){
+int verificarPonteiros(int inicio, int fim, Direcao direction, Player* p){
   int i;
-  int incremento = fim - inicio > 0 ? 1 : -1;
-  Ponto* pointer;
 
+  //Definir se o incremento será positivo ou negativo
+  int incremento = (fim - inicio) > 0 ? 1 : -1;
+  
+/*Definindo ponteiros para os valores iniciais e finais
+  parametro direction define o sentido do descolamento  
+*/
+  int* linha = (direction == RIGHT || direction == LEFT) ? &inicio : &i;
+  int* coluna = (direction == RIGHT || direction == LEFT) ? &i : &inicio;  
 
   if (fim != -1){
     for(i = inicio; i != fim; i = i + incremento){
-      
-      //Definir se será movimentado horizontalmente ou verticalmente
-      if (horizontal)
-        *pointer = p->tabuleiro[inicio][i];
-      else
-        *pointer = p->tabuleiro[i][inicio];
-
-      if (pointer->prox != NULL){
+      if (p->tabuleiro[*linha][*coluna].prox != NULL){
         return -1;
         break;
       }
     }
-    pointer->value = '1';
+    if (fim != -1) 
+      p->tabuleiro[*linha][*coluna].value = direction;
   }
   return fim;
 }
