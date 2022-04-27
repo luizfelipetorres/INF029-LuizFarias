@@ -12,4 +12,6 @@ void configuraTabuleiro(Player* p);
 
 int preencheBarco(int inicio, int fim, int incremento, Player* p);
 
+int verificarPonteiros(int inicio, int fim, int horizontal, Player* p);
+
 #endif

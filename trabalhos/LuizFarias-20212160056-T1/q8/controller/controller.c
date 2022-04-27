@@ -129,44 +129,63 @@ void configuraTabuleiro(Player* p){
       p->tabuleiro[linha][coluna].value = '0';
 
       //Definir se é possível colocar o barco na posição
-      left = (coluna - op ) < 0     ? 0 : coluna - op + 1;
-      right = (coluna + op - 1) > 9 ? 0 : coluna + op - 1;
-      top = (linha - op) < 0        ? 0 : linha - op + 1;
-      down = (linha + op - 1) > 9   ? 0 : linha + op - 1;
+      left = (coluna - op ) < 0     ? -1 : coluna - op + 1;
+      right = (coluna + op - 1) > 9 ? -1 : coluna + op - 1;
+      top = (linha - op) < 0        ? -1 : linha - op + 1;
+      down = (linha + op - 1) > 9   ? -1 : linha + op - 1;
 
-
-      if (left)
-        for(int i = coluna - 1; i >= left; i--)
-          p->tabuleiro[linha][i].value = '1';
-
-      if (right)
-        for (int i = coluna + 1; i <= right; i++)
-          p->tabuleiro[linha][i].value = '2';
-
-      if (top)
-        for (int i = linha - 1; i >= top; i--)
-          p->tabuleiro[i][coluna].value = '3';
+      int i;
+      left = verificarPonteiros(linha, left, 1, p);
+      /* if (left != -1){
+        for(i = coluna; i != left; i--){
+          if (p->tabuleiro[linha][i].prox != NULL){
+            left = -1;
+            break;
+          }
+        }
+        p->tabuleiro[linha][i].value = '1';
+      }  */
           
-      if (down)
-        for (int i = linha + 1; i <= down; i++)
-          p->tabuleiro[i][coluna].value = '4';
+      if (right != -1){
+        for (i = coluna; i != right; i++){
+          if (p->tabuleiro[linha][i].prox != NULL){
+            right = -1;
+            break;  
+          }
+        }
+        p->tabuleiro[linha][i].value = '2';
+      }
+
+      if (top != -1){
+        for (i = linha; i != top; i--){
+          if (p->tabuleiro[i][coluna].prox != NULL){
+            top = -1;
+            break;  
+          }
+        }
+        p->tabuleiro[i][coluna].value = '3';
+      }
+          
+      if (down != -1){
+        for (i = linha; i != down; i++){
+          if (p->tabuleiro[i][coluna].prox != NULL){
+            down = -1;
+            break;  
+          }
+        }
+        p->tabuleiro[i][coluna].value = '4';
+      }
 
       imprimirMapaDados(p);
       printf("\nO seu barco iniciará no 0 e irá até uma das extremidades");
       printf("\nEscolha uma das extremidades:\n\n-> ");
-      scanf(" %1c", &op);
+      char c;
+      scanf(" %1c", &c);
 
-/*       Ponto* aux;
-      for (int i = 0; i < 10; i++){
-        for (int j = 0; j < 10; j++){
-          p->tabuleiro[i][j].prox = p->tabuleiro[i][j].value = op ? 
-        }
-      } */
+      //Preencher todos com N e cria ligação na lista
+      //Verificar se 'c' é válido (!= -1)
 
-
-
-      
-      
+     
 
 /* 
       printf("%d %d %d %d", left, right, top, down);
@@ -183,7 +202,7 @@ int preencherPossibilidades(int linha, int coluna, int left, int right, int top,
 }
 
 int preencheHorizontal(int inicio, int *fim, int incremento, Player* p){
-  int tipo;
+/*   int tipo;
   
 
   if (fim){
@@ -199,23 +218,30 @@ int preencheHorizontal(int inicio, int *fim, int incremento, Player* p){
       for(int i = inicio + incremento; i >= fim; i = i + incremento)
         p->tabuleiro[inicio][i].value = ' ';
   }
-  
+   */
 }
 
 int verificarPonteiros(int inicio, int fim, int horizontal, Player* p){
-  int incremento = (fim - inicio) > 0 ? 1 : -1;
-  
-  if (horizontal){
-    for (int i = inicio + incremento; i != fim; i = i + incremento){
-      if (p->tabuleiro[inicio][i].prox != NULL)
-        return 0;
-    }
-  }else{
-    for (int i = inicio + incremento; i != fim; i = i + incremento){
-      if (p->tabuleiro[i][inicio].prox != NULL)
-        return 0;
-    }
-  }
-  return 1;
+  int i;
+  int incremento = fim - inicio > 0 ? 1 : -1;
+  Ponto* pointer;
 
+
+  if (fim != -1){
+    for(i = inicio; i != fim; i = i + incremento){
+      
+      //Definir se será movimentado horizontalmente ou verticalmente
+      if (horizontal)
+        *pointer = p->tabuleiro[inicio][i];
+      else
+        *pointer = p->tabuleiro[i][inicio];
+
+      if (pointer->prox != NULL){
+        return -1;
+        break;
+      }
+    }
+    pointer->value = '1';
+  }
+  return fim;
 }

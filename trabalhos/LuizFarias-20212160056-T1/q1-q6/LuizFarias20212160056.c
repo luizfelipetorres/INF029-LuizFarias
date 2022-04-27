@@ -11,10 +11,10 @@
 //  O aluno deve preencher seus dados abaixo, e implementar as questões do trabalho
 
 //  ----- Dados do Aluno -----
-//  Nome:
-//  email:
-//  Matrícula:
-//  Semestre:
+//  Nome: Luiz Felipe Tôrres Farias
+//  email: fellipe116@gmail.com
+//  Matrícula: 20212160056
+//  Semestre: 2
 
 //  Copyright © 2016 Renato Novais. All rights reserved.
 // Última atualização: 07/05/2021 - 19/08/2016
@@ -25,8 +25,6 @@
 #include "LuizFarias20212160056.h" // Substitua pelo seu arquivo de header renomeado
 #include <stdlib.h>
 #include <string.h>
-
-
 
 /*
 ## função utilizada para testes  ##
@@ -80,12 +78,15 @@ DataQuebrada quebraData(char data[]){
 	char sMes[3];
 	char sAno[5];
 	int i;
+    dq.valido = 1;
+
 
 	for (i = 0; data[i] != '/'; i++){
 		sDia[i] = data[i];	
 	}
 	if(i == 1 || i == 2){ // testa se tem 1 ou dois digitos
 		sDia[i] = '\0';  // coloca o barra zero no final
+
 	}else 
 		dq.valido = 0;
 	
@@ -121,8 +122,8 @@ DataQuebrada quebraData(char data[]){
     dq.iMes = atoi(sMes);
     dq.iAno = atoi(sAno); 
 
-	dq.valido = 1;
-    
+/*     printf("d:%d m:%d a:%d\n",dq.iDia, dq.iMes, dq.iAno);
+ */
     return dq;
 }
 /*
@@ -246,6 +247,7 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
     int bissextoi, bissextof;
     int qtdDiasMesi, qtdDiasMesf;
 
+    //printf("%s - %s: ", datainicial, datafinal);
     if (!q1(datainicial)){
       dma.retorno = 2;
 
@@ -254,20 +256,12 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
 
     }else{
 
-
-        printf("%s - %s\n", datainicial, datafinal);
         datai = quebraData(datainicial);
         dataf = quebraData(datafinal);
 
         comparaAno = comparaNumeros(datai.iAno, dataf.iAno);
         comparaMes = comparaNumeros(datai.iMes, dataf.iMes);
         comparaDia = comparaNumeros(datai.iDia, dataf.iDia);
-        /* printf(
-            "C.Ano: %d\nC.Mes: %d\nC.Dia: %d\n",
-            comparaAno,
-            comparaMes,
-            comparaDia
-        ); //debug */
 
         bissextoi = anoBissexto(&datai.iAno);
         bissextof = anoBissexto(&dataf.iAno);
@@ -308,62 +302,29 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
                 dma.qtdDias += qtdDiasMesi;
                 if ( 
                     datai.iMes == 2 && 
-                    dataf.iMes == 3 && 
-                    bissextof
+                    dataf.iMes == 3
                 )
-                    dma.qtdDias++; 
+                    if (bissextof) 
+                        dma.qtdDias++;
+                    if (bissextoi) 
+                        dma.qtdDias--;
+                
             } 
             
             if (dma.qtdMeses < 0){
                 dma.qtdAnos--;
                 dma.qtdMeses += 12;
             }
-
-
-            
-            /*
-            Primeiro, verificar dias. 
-                Se dias da data inicial for menor ou igual, qtdDias = diasFinal - diasInicial
-                senão, 
-                    qtdDias += (qtdDiasMesi - diaInicial) + diaFinal
-
-            depois, verificar meses
-                se mes inicialfor menor ou igual, qtdMeses = mesFinal - mesInicial
-
-            */
-            /* if (comparaDia == F_MAIOR || comparaDia == IGUAIS){
-                dma.qtdDias = dataf.iDia - datai.iDia;
-            }else{
-                dma.qtdDias = qtdDiasMesi - datai.iDia + dataf.iDia;
-            }
-
-            if (comparaAno == IGUAIS){
-                if (comparaMes == F_MAIOR){
-                    dma.qtdMeses = dataf.iMes - datai.iMes;
-                }else{
-
-                }
-
-            }else{
-
-            } */
-
-           
-
         }
-    
-        //verifique se a data final não é menor que a data inicial
-        //calcule a distancia entre as datas
-      //se tudo der certo
     }
-
-    printf(
-        "qtdAnos: %d\nqtdMeses: %d\nqtdDias: %d\nRetorno: %d\n",
+    /*
+     printf(
+        "\nqtdAnos: %d\nqtdMeses: %d\nqtdDias: %d\nRetorno: %d\n",
         dma.qtdAnos,
         dma.qtdMeses,
         dma.qtdDias,
         dma.retorno
-    ); //debug
+    ); //debug */
     return dma;
 }
 
@@ -486,27 +447,17 @@ int q5(int num)
 {
     int resultado = 0;
     int grandeza = 1;
+    int resto;
     int aux;
     int i;
 
     //Achar o grandeza do número
     grandeza = encontraGrandeza(num);
 
-    //Pegar a unidade
-    resultado += (num / grandeza);
-    i = 10;
-
-    //Pegar números do meio
-    while (grandeza >= 10){
-        resultado += ((num % grandeza) / (grandeza / 10) * i);
-        grandeza /= 10;
-        i *= 10;
+    for (i = 1; grandeza >= 1; grandeza /= 10, i *=10){
+        resto = num % (grandeza * 10) / grandeza;
+        resultado += resto * i;
     }
-
-    //Pegar a maior grandeza
-    resultado += ((num % grandeza) * 10);
-    //printf("resultado: %d\n", resultado);
-
     return resultado;
 }
 
@@ -523,10 +474,10 @@ int q5(int num)
 int encontraGrandeza(int numero){
     int g = 1;
     
-    while (g <= numero)
+    while (numero >= 10){
+        numero /= 10;
         g *= 10;
-    g /=  10;
-
+    }
     return g;
 }
 
@@ -540,9 +491,6 @@ int q6(int numerobase, int numerobusca)
     //Encontrar a grandeza de base e busca
     gBase = encontraGrandeza(numerobase);
     gBusca = encontraGrandeza(numerobusca);
-   /*  printf("nbase inicial: %d\n", numerobase);
-    printf("gBase inicial: %d\n", gBase);
-    printf("gBusca inicial: %d\n", gBusca); */
     
     while (gBase >= gBusca){
         resto = (numerobase / (gBase / gBusca));
@@ -554,16 +502,15 @@ int q6(int numerobase, int numerobusca)
             numerobase %= gBase;
             gBase /= 10;
         }
-        
-/*         printf("nbase agora: %d\n", numerobase);
- */    
     }
-    /* printf(
-        "nbase: %d\nprocurado: %d\nresto: %d\n",
+    /*
+     printf(
+        "nbase: %d\nprocurado: %d\nresto: %d\nocorrencias: %d\n",
         numerobase,
         numerobusca,
-        resto
-    ); */
+        resto,
+        qtdOcorrencias
+    ); //debug */
 
     return qtdOcorrencias;
 
