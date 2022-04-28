@@ -17,32 +17,42 @@ Ponto criarPonto(){
 void iniciarPartida(){
   Player* p1;
   Player* p2;
-
+  Player* pAtirador;
+  Player* pAlvo;
+  int linha, coluna;
+  char escolha[2];
+  int rodada = 0;
+  int validar;
+  
+  
   p1 = criaPlayer(1);
   p2 = criaPlayer(2);
-  
 
+  configuraTabuleiro(p1);
+  configuraTabuleiro(p2);
 
-/*
-  Iniciar configuração do mapa
-    Imprimir quantidade de barcos do player
-    perguntar qual o tamanho do barco que quer inserir
-    verificar se o valor do barco escolhido é zero
-      Se for zero
-        pedir para inserir outro barco
-      Se não for zero
+  /*
+  laço de partida
+    verificar se rodada é par ou impar
+      par = player1
+      impar = player2
+      usar ponteiro no player
+      perguntar onde quer atirar
+        Verificar se o barco é 1
+        se for, trocar value para 
 
-        Barco escolhido é decrementado
-        Imprimir barco com opções T D L R para escolha da posição
-        Pedir para escolher entre T D L R
-          Criar a lista encadeada na diração selecionada
 */
-
-  //configuraTabuleiro(p1);
-  //configuraTabuleiro(p2);
-  
-  printMaps(p1, p2);
-  printf("Vez do jogador x: ");
+  do{
+    pAtirador = (rodada % 2 == 0) ? p1: p2;
+    pAlvo = (rodada % 2 == 0) ? p2: p1;
+    
+    printMaps(p1, p2);
+    printf("Vez do PLAYER %d\n\n-> ", pAtirador->value);
+    scanf(" %2c", escolha);
+    validar = validarInput(escolha, &linha, &coluna);
+      
+    rodada++;
+  }while((p1->tboats > 0) && (p2->tboats > 0));
   
 }
 
@@ -62,6 +72,10 @@ Player* criaPlayer(ePlayer n){
       p->tabuleiro[i][j] = criarPonto();
 
   return p;
+}
+
+void totalBarcos(Player* p){
+  p->tboats = (BOAT4 * 4) + (BOAT3 * 3) + (BOAT2 * 2) + BOAT1;
 }
 
 void configuraTabuleiro(Player* p){
@@ -169,7 +183,8 @@ void configuraTabuleiro(Player* p){
     
     (*iPointer)--;
     p->tboats--;
-  }while(p->tboats > 0); 
+  }while(p->tboats > 0);
+  totalBarcos(p);
 }
 
 void criarBarco(int linha, int coluna, int fim, Direcao direction, Player* p){
@@ -192,7 +207,6 @@ void criarBarco(int linha, int coluna, int fim, Direcao direction, Player* p){
     }
   }
 }
-
 
 int verificarPonteiros(int linha, int coluna, int fim, Direcao direction, Player* p){
   int i = (direction == LEFT || direction == RIGHT) ? coluna : linha;

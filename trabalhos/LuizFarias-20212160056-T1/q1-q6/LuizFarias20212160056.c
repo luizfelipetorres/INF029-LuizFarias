@@ -351,13 +351,6 @@ int q3(char *texto, char c, int isCaseSensitive)
         }else if ((c >= 97) && (c <= 122)){
             cCase += ('A' - 'a');
         }
-        /* printf("\nOriginal: %c (%d)\nCase: %c (%d)\nIsCaseSensitive: %d\nRetorno: ",
-            c,
-            c, 
-            cCase, 
-            cCase, 
-            isCaseSensitive
-        ); //debug*/
     }
     
     for (int i = 0; i < len; i++){
@@ -399,12 +392,19 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
     int pInicio = 0, pFim = 0, vInicio, vFim;
     int lenTexto = strlen(strTexto);
     int lenBusca = strlen(strBusca);
+    int acentoBusca = 0;
     int acento = 0;
     int j = 0;
 
+
+    for (int k = 0; k < lenBusca; k++)
+      acentoBusca += strBusca[k] < 0 ? 1 : 0;
+    
     for (int i = 0; i < lenTexto; i++){
-        if (strTexto[i] < 0 && strTexto[i+1] < 0)
-            acento++;
+      
+      if (!acentoBusca)  
+        acento += (strTexto[i] < 0 && strTexto[i+1] < 0) ? 1 : 0;
+          
 
         if (strTexto[i] == strBusca[j]){
             j++;
