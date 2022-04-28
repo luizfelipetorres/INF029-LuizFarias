@@ -23,13 +23,20 @@ void iniciarPartida(){
   char escolha[2];
   int rodada = 0;
   int validar;
+  int validarTiro;
+  int opMenuRodada;
   
   
   p1 = criaPlayer(1);
   p2 = criaPlayer(2);
 
+  //COnfigurar os barcos nas posições
   configuraTabuleiro(p1);
   configuraTabuleiro(p2);
+
+  //Limpar a visualização dos mapas
+  limparMapa(p1, ' ');
+  limparMapa(p2, ' ');
 
   /*
   laço de partida
@@ -47,13 +54,71 @@ void iniciarPartida(){
     pAlvo = (rodada % 2 == 0) ? p2: p1;
     
     printMaps(p1, p2);
-    printf("Vez do PLAYER %d\n\n-> ", pAtirador->value);
-    scanf(" %2c", escolha);
-    validar = validarInput(escolha, &linha, &coluna);
+
+    //Verificar se quer atacar ou listar
+    do{
+      printf("Vez do PLAYER %d\n", pAtirador->value);
+      opMenuRodada = menuRodada();
+      if (!opMenuRodada)
+        printf("Opção inválida! Tente novamente\n");
+
+      else if (opMenuRodada == 2){
+        manipularBarcos(pAtirador, 'N');
+        printMaps(p1, p2);
+        manipularBarcos(pAtirador, ' ');
+        printf("Pressione qualquer tecla para voltar...");
+        getchar();
+        getchar();
+        printMaps(p1, p2);
+      }
+    }while(opMenuRodada != 1);
+
+    printMaps(p1, p2);
+    do{
+      //Validar input
+      printf("Vez do PLAYER %d\nEscolha a linha e coluna\n-> ", pAtirador->value);
+      scanf(" %s", escolha);
+      validar = validarInput(escolha, &linha, &coluna);
+      if(!validar){
+        printMaps(p1, p2);
+        printf("Valor digitado inválido! Tente novamente\n");
+      }else{
+
+        //Validar tiro
+        validarTiro = tiro(pAlvo, linha, coluna);
+        if (!validarTiro){
+          printMaps(p1, p2);
+          printf("Esse campo já foi bombardeado! Tente novamente\n");
+        }
+      }
+    }while(!validar || !validarTiro);
+
       
     rodada++;
   }while((p1->tboats > 0) && (p2->tboats > 0));
-  
+  printf("Player %d venceu!\n", p1->tboats == 0 ? 1 : 2);
+  getchar();  
+}
+
+void listarTabuleiro(Player* p, Player* alvo){
+  manipularBarcos(p, 'N');
+  manipularBarcos(p, ' ');
+
+}
+
+int tiro(Player* p, int linha, int coluna){
+  if (p->tabuleiro[linha][coluna].value != ' ')
+    return 0;
+
+  if (p->tabuleiro[linha][coluna].barco == 1){
+    p->tabuleiro[linha][coluna].barco = 2;
+    p->tabuleiro[linha][coluna].value = 'O';
+    p->tboats--;
+  }else{
+    p->tabuleiro[linha][coluna].value = 'X';
+  }
+
+  return 1;
 }
 
 Player* criaPlayer(ePlayer n){

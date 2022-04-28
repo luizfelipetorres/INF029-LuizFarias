@@ -4,4 +4,6 @@
   void menu();
 
   void header();
+
+  int menuRodada();
 #endif

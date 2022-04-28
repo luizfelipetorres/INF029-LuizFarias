@@ -15,5 +15,9 @@ void printMaps(Player* p1, Player* p2);
 
 void imprimirLinha();
 
+void manipularBarcos(Player* p, char c);
+
+
+
 
 #endif

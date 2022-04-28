@@ -24,6 +24,6 @@
   #endif
 
 //Módulos
-  
+  void espere(int segundos);
 
 #endif

@@ -38,3 +38,11 @@ void header(){
   printf("||                   ||\n");
   printf("=======================\n\n");
 }
+
+int menuRodada(){
+  int escolha;
+  printf("1 - Atirar\n");
+  printf("2 - Listar seu mapa\n\n-> ");
+  scanf("%d", &escolha);
+  return escolha == 1 || escolha == 2 ? escolha : 0 ;
+}

@@ -67,10 +67,18 @@ void printMaps(Player* p1, Player* p2){
   system(CLEAR);
   imprimirPlayer(p1);
   printMap(p1);
-  printf("\n\n");
+  printf("\n");
   imprimirPlayer(p2);
   printMap(p2);
-  printf("\n\n");
+  printf("\n");
+
+}
+
+void manipularBarcos(Player* p, char c){
+  for (int i = 0; i < 10; i++)
+    for (int j = 0; j < 10; j++)
+      if (p->tabuleiro[i][j].barco == 1)
+        p->tabuleiro[i][j].value = c;
 
 }
 
