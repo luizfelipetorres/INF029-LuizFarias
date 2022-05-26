@@ -51,5 +51,7 @@
 
     int verificarPosicaoTamanho(int p, int t);
     int busca(No *inicio, int valor);
+    int todasEstruturasVazias();
+    int *intercala(int *vetor1, int tamanho1, int *vetor2, int tamanho2);
 
 #endif  // TRABALHO2_ESTRUTURAVETORES_H

@@ -198,15 +198,7 @@ int excluirNumeroEspecificoDeEstrutura(int posicao, int valor){
 
 // se posição é um valor válido {entre 1 e 10}
 int ehPosicaoValida(int posicao){
-    int retorno = 0;
-    if (posicao < 1 || posicao > 10)
-    {
-        retorno = POSICAO_INVALIDA;
-    }
-    else
-        retorno = SUCESSO;
-
-    return retorno;
+    return (posicao < 1 || posicao > 10 ? POSICAO_INVALIDA : SUCESSO);
 }
 /*
 Objetivo: retorna os números da estrutura auxiliar da posição 'posicao (1..10)'.
@@ -253,15 +245,34 @@ int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[]){
     //Insertion
     aux = v->lista;
     vetorAux[0] = aux->conteudo;
-    for (i = 1; i <= v->qtdElementos; i++, aux = aux->prox){
+    for (i = 0; i < v->qtdElementos; i++, aux = aux->prox){
 
-        for (j = i - 1; (j >= 0) && (vetorAux[j] > aux->conteudo); j--){
+        for (j = i - 1; (j >= 0) && (vetorAux[j] >= aux->conteudo); j--){
             vetorAux[j + 1] = vetorAux[j];
         }
         vetorAux[j+1] = aux->conteudo;
     }
     return SUCESSO;
 }
+
+/*
+Objetivo: percorrer vetorPrincipal e verificar se todas as estruturas estão vazias
+
+Retorno: 
+1 se for verdade
+0 se for falso
+*/
+int todasEstruturasVazias(){
+    Principal *v;
+    int contadorVazias = 0;
+
+    for (int i = 0; i < TAM; i++){
+        v = &vetorPrincipal[i];
+        contadorVazias += (v->qtdElementos == 0 ? 1 : 0);
+    }
+    return contadorVazias == 10;
+}
+
 
 /*
 Objetivo: retorna os números de todas as estruturas auxiliares.
@@ -272,11 +283,84 @@ Rertono (int)
     TODAS_ESTRUTURAS_AUXILIARES_VAZIAS - todas as estruturas auxiliares estão vazias
 */
 int getDadosDeTodasEstruturasAuxiliares(int vetorAux[]){
+    Principal *v;
+    No *n;
+    int *aux;
+    int tamanho = 0;
+    int k = 0;
 
-    int retorno = 0;
-    return retorno;
+
+    if (todasEstruturasVazias())
+        return TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
+
+    for (int i = 0; i < TAM; i++){
+        /*
+        OK - Pego o qtdElementos de v[i]
+        OK - Crio um vetor aux com esse qtdElementos
+        OK - coloco em auxiliar
+        faço merge
+
+        */
+
+       //Simplificar a leitura
+        v = &vetorPrincipal[i];
+
+        //Verificar se a estrutura está vazia
+        if (v->qtdElementos != 0){
+            
+            //Preencher
+            n = v->lista;
+            for (int j = 0; j < v->qtdElementos; j++, n = n->prox)
+                vetorAux[k++] = n->conteudo;
+            
+
+       
+            //Criar um vetor auxiliar para 
+            /*
+            aux = malloc(sizeof(int) * v->qtdElementos);
+            getDadosEstruturaAuxiliar(i + 1, aux);
+            vetorAux = intercala(aux, v->qtdElementos, vetorAux, tamanho-v->qtdElementos);
+            */
+        }
+
+
+    }
+    return SUCESSO;
 }
 
+/*
+Objetivo: juntar (merge) dois vetores ordenados
+
+Retorno: tamanho do vetor resultante
+*/
+int *intercala(int *vetor1, int tamanho1, int *vetor2, int tamanho2){
+    int tamanhoTotal = tamanho1 + tamanho2;
+    int i, j, k;
+    j = k = 0;
+    int *vetorResultante = malloc(sizeof(int) * tamanhoTotal);
+
+    for (i = 0; i < tamanhoTotal; i++){
+
+        //Se finalizar o vetor1
+        if (j == tamanho1){
+            vetorResultante[i] = vetor2[k++];
+        
+        //Se finalizar o vetor2
+        }else if (k == tamanho2){
+            vetorResultante[i] = vetor1[j++];
+
+        //Se vetor1 for menor ou igual
+        }else if (vetor1[j] <= vetor2[k]){
+            vetorResultante[i] = vetor1[j++];
+        
+        //Vetor2 for menor
+        }else{
+            vetorResultante[i] = vetor2[k++];
+
+        }
+    }
+    return vetorResultante;
+}
 /*
 Objetivo: retorna os números ordenados de todas as estruturas auxiliares.
 os números devem ser armazenados em vetorAux
@@ -286,9 +370,34 @@ Rertono (int)
     TODAS_ESTRUTURAS_AUXILIARES_VAZIAS - todas as estruturas auxiliares estão vazias
 */
 int getDadosOrdenadosDeTodasEstruturasAuxiliares(int vetorAux[]){
+    Principal *v;
+    No* n;
+    int *aux;
+    int tamanho = 0;
+    int *resultante;
 
-    int retorno = 0;
-    return retorno;
+    if (todasEstruturasVazias())
+        return TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
+
+    for (int i = 0; i < TAM; i++){
+
+        v = &vetorPrincipal[i];
+
+        if (v->qtdElementos != 0){
+
+            tamanho += v->qtdElementos;
+            aux = malloc(sizeof(int) * v->qtdElementos);
+
+            getDadosOrdenadosEstruturaAuxiliar(i + 1, aux);
+            resultante = intercala(aux, v->qtdElementos, resultante, tamanho - v->qtdElementos);
+        }
+
+    }
+
+    for (int i = 0; i < tamanho; i++)
+        vetorAux[i] = resultante[i];
+
+    return SUCESSO;
 }
 
 /*
