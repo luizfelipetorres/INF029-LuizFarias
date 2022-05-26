@@ -50,5 +50,6 @@
     void dobrar(int *x);
 
     int verificarPosicaoTamanho(int p, int t);
+    int busca(No *inicio, int valor);
 
 #endif  // TRABALHO2_ESTRUTURAVETORES_H

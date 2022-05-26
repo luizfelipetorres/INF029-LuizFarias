@@ -148,6 +148,11 @@ int excluirNumeroDoFinaldaEstrutura(int posicao){
     }
 }
 
+int busca(No *inicio, int valor){
+
+}
+
+
 /*
 Objetivo: excluir o numero 'valor' da estrutura auxiliar da posição 'posicao'.
 Caso seja excluido, os números posteriores devem ser movidos para as posições anteriores
@@ -162,8 +167,33 @@ Rertono (int)
 
 */
 int excluirNumeroEspecificoDeEstrutura(int posicao, int valor){
-    int retorno = SUCESSO;
-    return retorno;
+    Principal *v = &vetorPrincipal[posicao - 1];
+    No *aux = v->lista;
+    int encontrado = 0;
+    int i;
+    int verificar = verificarPosicaoTamanho(posicao, v->tamanho);
+
+    if (verificar != SUCESSO)
+        return verificar;
+
+    for(i = 0; i < v->qtdElementos; i++, aux = aux->prox){
+        
+        //Se encontrar o valor, definir 'encontrado' com valor de i
+        if (!encontrado)
+            encontrado = (aux->conteudo == valor ? 1: 0);
+
+        //Caso o valor tenha sido encontrado
+        if (encontrado)
+            aux->conteudo = aux->prox->conteudo;
+        
+    }
+
+    if (encontrado){
+        v->qtdElementos--;
+        return SUCESSO;
+    }else{
+        return NUMERO_INEXISTENTE;
+    }
 }
 
 // se posição é um valor válido {entre 1 e 10}
@@ -188,10 +218,18 @@ Retorno (int)
     POSICAO_INVALIDA - Posição inválida para estrutura auxiliar
 */
 int getDadosEstruturaAuxiliar(int posicao, int vetorAux[]){
+    Principal *v = &vetorPrincipal[posicao - 1];
+    No *aux;
+    int verificar = verificarPosicaoTamanho(posicao, v->tamanho);
 
-    int retorno = 0;
+    if (verificar != SUCESSO)
+        return verificar;
 
-    return retorno;
+    aux = v->lista;
+    for (int i = 0; i < v->qtdElementos; i++, aux = aux->prox){
+        vetorAux[i] = aux->conteudo;
+    }
+    return SUCESSO;
 }
 
 /*
@@ -204,11 +242,25 @@ Rertono (int)
     POSICAO_INVALIDA - Posição inválida para estrutura auxiliar
 */
 int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[]){
-
-    int retorno = 0;
-
+    Principal *v = &vetorPrincipal[posicao - 1];
+    No *aux;
+    int temp, i, j;
+    int verificar = verificarPosicaoTamanho(posicao, v->tamanho);
     
-    return retorno;
+    if (verificar != SUCESSO)
+        return verificar;
+
+    //Insertion
+    aux = v->lista;
+    vetorAux[0] = aux->conteudo;
+    for (i = 1; i <= v->qtdElementos; i++, aux = aux->prox){
+
+        for (j = i - 1; (j >= 0) && (vetorAux[j] > aux->conteudo); j--){
+            vetorAux[j + 1] = vetorAux[j];
+        }
+        vetorAux[j+1] = aux->conteudo;
+    }
+    return SUCESSO;
 }
 
 /*
@@ -322,20 +374,25 @@ para poder liberar todos os espaços de memória das estruturas auxiliares.
 
 void finalizar(){
     Principal *v;
-    No *aux, *prox;
+    No *aux;
+    No *prox;
 
     for (int i = 0; i < TAM; i++){
         v = &vetorPrincipal[i];
 
-        //Se a lista estiver vazia, liberar somente v
-        if (v->lista == NULL)
-            free(v);
-        
-        else{
-            for (int j = 0, aux = v->lista; j < v->tamanho; j++){
-            
 
+        //Se a lista não estiver vaziar, percorrer e esvaziar
+        if (v->lista != NULL){
+
+            aux = v->lista;
+
+            for (int j = 0; j < v->tamanho; j++){
+                prox = aux->prox;
+                free(aux);
+                aux = prox;
             }
+            v->lista = NULL;
+            v->tamanho = v->qtdElementos = 0;
         }
     }
 }

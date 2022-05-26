@@ -21,10 +21,10 @@ int main(){
     testeCriarEstrutura();
     testeInserirComEstrutura();
     testeExcluir();
-    /*
     testeExcluirNumeroEspecifico();
     testeListar();
     testeRetornarTodosNumeros();
+    /*
     testeMudarTamanhoEstrutura();
     testeListaEncadeada();*/
     finalizar();
@@ -85,8 +85,7 @@ void testeExcluir(){
 2 [ , , ]
 */
 
-void testeExcluirNumeroEspecifico()
-{
+void testeExcluirNumeroEspecifico(){
     show_log("testeExcluirNumeroEspecifico()");
     //###  int excluirNumeroEspecificoDeEstrutura(int posicao, int valor); ###
     printf("%d\n", criarEstruturaAuxiliar(9, 3) == SUCESSO);
