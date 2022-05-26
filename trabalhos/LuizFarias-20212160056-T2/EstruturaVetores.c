@@ -4,7 +4,7 @@
 
 #include "EstruturaVetores.h"
 
-int vetorPrincipal[TAM];
+Principal vetorPrincipal[TAM];
 
 /*
 Objetivo: criar estrutura auxiliar na posição 'posicao'.
@@ -18,25 +18,36 @@ Rertono (int)
     TAMANHO_INVALIDO - o tamanho deve ser maior ou igual a 1
 */
 int criarEstruturaAuxiliar(int posicao, int tamanho){
-
+    int posicaoDecrementada = posicao - 1;
+    Principal *v;
     int retorno = 0;
-  
-    // a posicao pode já existir estrutura auxiliar
-    retorno = JA_TEM_ESTRUTURA_AUXILIAR;
-  
+
     // se posição é um valor válido {entre 1 e 10}
-    retorno = POSICAO_INVALIDA;
+    if (posicaoDecrementada < 0 || posicaoDecrementada > 9){ 
+        return POSICAO_INVALIDA;
+    
+    }else{
+        //Utilizar ponteiro para facilitar leitura
+        v = &vetorPrincipal[posicao - 1];
+   
+        // a posicao pode já existir estrutura auxiliar
+        if (v->tamanho != 0) return JA_TEM_ESTRUTURA_AUXILIAR;
+    } 
+  
   
     // o tamanho ser muito grande
-    retorno = SEM_ESPACO_DE_MEMORIA;
+    //retorno = SEM_ESPACO_DE_MEMORIA;
   
     // o tamanho nao pode ser menor que 1
-    retorno = TAMANHO_INVALIDO;
+    if (tamanho < 1) return TAMANHO_INVALIDO;
   
     // deu tudo certo, crie
-    retorno = SUCESSO;
+    else{
+        v->tamanho = tamanho;
+        v->lista = malloc(sizeof(No) * tamanho);
 
-    return retorno;
+        return SUCESSO;
+    }
 }
 
 /*
@@ -48,18 +59,23 @@ Rertono (int)
     POSICAO_INVALIDA - Posição inválida para estrutura auxiliar
 CONSTANTES
 */
-int inserirNumeroEstrutura(int posicao, int valor){
+int inserirNumeroEmEstrutura(int posicao, int valor){
     int retorno = 0;
     int existeEstruturaAuxiliar = 0;
     int temEspaco = 0;
-    int posicao_invalida = 0;
+    int posicao_invalida = (posicao >= 1 && posicao <= 10 ? 0 : 1);
+
+    
 
     if (posicao_invalida)
-        retorno = POSICAO_INVALIDA;
-    else
-    {
+        return POSICAO_INVALIDA;
+    else{
         // testar se existe a estrutura auxiliar
-        if (existeEstruturaAuxiliar){
+
+        
+        Principal *v = &vetorPrincipal[--posicao];
+
+        if (v->lista != NULL){
             if (temEspaco){
                 //insere
                 retorno = SUCESSO;
@@ -251,6 +267,11 @@ Objetivo: inicializa o programa. deve ser chamado ao inicio do programa
 */
 
 void inicializar(){
+    for (int i = 0; i < TAM; i++){
+        vetorPrincipal[i].lista = NULL;
+        vetorPrincipal[i].qtdElementos = 0;
+        vetorPrincipal[i].tamanho = 0;
+    }
 }
 
 /*

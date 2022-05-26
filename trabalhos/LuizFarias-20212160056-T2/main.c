@@ -21,7 +21,7 @@ int menu(){
 }
 
 int main(){
-    No *no = inicializar();
+    inicializar();
     int op;
     int sair = 0;
     int ret;
