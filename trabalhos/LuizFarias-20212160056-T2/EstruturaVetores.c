@@ -20,6 +20,7 @@ Rertono (int)
 int criarEstruturaAuxiliar(int posicao, int tamanho){
     int posicaoDecrementada = posicao - 1;
     Principal *v;
+    No *aux, *ant;
     int retorno = 0;
 
     // se posição é um valor válido {entre 1 e 10}
@@ -44,11 +45,29 @@ int criarEstruturaAuxiliar(int posicao, int tamanho){
     // deu tudo certo, crie
     else{
         v->tamanho = tamanho;
-        v->lista = malloc(sizeof(No) * tamanho);
+
+        //Iterar lista alocando espaços
+        for (int i = 0; i < tamanho; i++){
+            aux = (No*) malloc(sizeof(No));
+            //aux->conteudo = i;
+            
+            //Se for a primeira iteração, apontar lista para aux
+            if (i == 0)
+                v->lista = aux;
+            else
+                ant->prox = aux;
+            
+            ant = aux;
+            aux = aux->prox; 
+        }
+
+
 
         return SUCESSO;
     }
 }
+
+
 
 /*
 Objetivo: inserir número 'valor' em estrutura auxiliar da posição 'posicao'
@@ -63,29 +82,41 @@ int inserirNumeroEmEstrutura(int posicao, int valor){
     int retorno = 0;
     int existeEstruturaAuxiliar = 0;
     int temEspaco = 0;
-    int posicao_invalida = (posicao >= 1 && posicao <= 10 ? 0 : 1);
-
+    No *aux;
     
 
-    if (posicao_invalida)
+    if (posicao < 1 || posicao > 10)
         return POSICAO_INVALIDA;
+
     else{
+
+        //Definir ponteiro para facilitar leitura
+        Principal *v = &vetorPrincipal[posicao - 1];
+
         // testar se existe a estrutura auxiliar
-
-        
-        Principal *v = &vetorPrincipal[--posicao];
-
         if (v->lista != NULL){
-            if (temEspaco){
-                //insere
-                retorno = SUCESSO;
+
+            //Verificar se tem espaço
+            if (v->tamanho > v->qtdElementos){
+                
+                //Navegar até a última posição não preenchida
+                aux = v->lista;
+                int i = 0;
+                while(i++ < v->qtdElementos)
+                    aux = aux->prox;
+
+                //Preencher
+                aux->conteudo = valor;
+                v->qtdElementos++;
+
+                return SUCESSO;
             }
             else{
-                retorno = SEM_ESPACO;
+                return SEM_ESPACO;
             }
         }
         else{
-            retorno = SEM_ESTRUTURA_AUXILIAR;
+            return SEM_ESTRUTURA_AUXILIAR;
         }
     }
 
@@ -104,8 +135,17 @@ Rertono (int)
     POSICAO_INVALIDA - Posição inválida para estrutura auxiliar
 */
 int excluirNumeroDoFinaldaEstrutura(int posicao){
-    int retorno = SUCESSO;
-    return retorno;
+    //Usar ponteiro para facilitar leitura
+    Principal *v = &vetorPrincipal[posicao - 1];
+    int verificar = verificarPosicaoTamanho(posicao, v->tamanho);
+
+    if (verificar != SUCESSO)
+        return verificar;
+    
+    else{
+        v->qtdElementos--;
+        return SUCESSO;
+    }
 }
 
 /*
@@ -281,4 +321,42 @@ para poder liberar todos os espaços de memória das estruturas auxiliares.
 */
 
 void finalizar(){
+    Principal *v;
+    No *aux, *prox;
+
+    for (int i = 0; i < TAM; i++){
+        v = &vetorPrincipal[i];
+
+        //Se a lista estiver vazia, liberar somente v
+        if (v->lista == NULL)
+            free(v);
+        
+        else{
+            for (int j = 0, aux = v->lista; j < v->tamanho; j++){
+            
+
+            }
+        }
+    }
+}
+
+int verificarPosicaoTamanho(int p, int t){
+
+    //Definir ponteiro para facilitar leitura
+    Principal *v = &vetorPrincipal[p - 1];
+
+    if (p < 1 || p > 10) 
+        return POSICAO_INVALIDA;
+
+    else if (v->lista == NULL)
+        return SEM_ESTRUTURA_AUXILIAR;
+    
+    else if (t < 1)
+        return TAMANHO_INVALIDO;
+
+    else if (v->qtdElementos == 0)
+        return ESTRUTURA_AUXILIAR_VAZIA;
+
+    else
+        return SUCESSO;
 }

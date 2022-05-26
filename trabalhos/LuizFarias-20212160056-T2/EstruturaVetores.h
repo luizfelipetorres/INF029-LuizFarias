@@ -7,7 +7,8 @@
     // constante anterior mais 1, caso nao haja valor algum na primeira constante ela vai ser inicializada com 0
     enum { 
         TODAS_ESTRUTURAS_AUXILIARES_VAZIAS = -11, 
-        NOVO_TAMANHO_INVALIDO, NUMERO_INEXISTENTE,
+        NOVO_TAMANHO_INVALIDO, 
+        NUMERO_INEXISTENTE,
         ESTRUTURA_AUXILIAR_VAZIA, 
         TAMANHO_INVALIDO, 
         SEM_ESPACO_DE_MEMORIA, 
@@ -44,9 +45,10 @@
     No *montarListaEncadeadaComCabecote();
     void getDadosListaEncadeadaComCabecote(No *inicio, int vetorAux[]);
     void destruirListaEncadeadaComCabecote(No **inicio);
-
     void inicializar();
     void finalizar();
     void dobrar(int *x);
+
+    int verificarPosicaoTamanho(int p, int t);
 
 #endif  // TRABALHO2_ESTRUTURAVETORES_H

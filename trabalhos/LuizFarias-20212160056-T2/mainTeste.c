@@ -20,8 +20,8 @@ int main(){
     testeInserirSemNada();
     testeCriarEstrutura();
     testeInserirComEstrutura();
-    /*
     testeExcluir();
+    /*
     testeExcluirNumeroEspecifico();
     testeListar();
     testeRetornarTodosNumeros();
@@ -45,8 +45,7 @@ void testeInserirSemNada()
     printf("%d\n", inserirNumeroEmEstrutura(11, 2) == POSICAO_INVALIDA);
 }
 
-void testeCriarEstrutura()
-{
+void testeCriarEstrutura(){
     show_log("testeCriarEstrutura()");
     printf("%d\n", criarEstruturaAuxiliar(-2, 5) == POSICAO_INVALIDA);
     printf("%d\n", criarEstruturaAuxiliar(0, 5) == POSICAO_INVALIDA);
@@ -60,8 +59,7 @@ void testeCriarEstrutura()
 2 [ , , ]
 */
 
-void testeInserirComEstrutura()
-{
+void testeInserirComEstrutura(){
     show_log("testeInserirComEstrutura()");
     //###  int inserirNumeroEmEstrutura(int valor, int posicao); ###
     printf("%d\n", inserirNumeroEmEstrutura(2, 4) == SUCESSO);
@@ -72,8 +70,7 @@ void testeInserirComEstrutura()
 /*
 2 [4,-2,6]
 */
-void testeExcluir()
-{
+void testeExcluir(){
     show_log("testeExcluir()");
     //###  int excluirNumeroDoFinaldaEstrutura(int posicao); ###
     printf("%d\n", excluirNumeroDoFinaldaEstrutura(2) == SUCESSO);
