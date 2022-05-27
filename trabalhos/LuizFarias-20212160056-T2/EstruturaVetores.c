@@ -475,6 +475,15 @@ Retorno
     void.
 */
 void destruirListaEncadeadaComCabecote(No **inicio){
+    No *aux = *inicio;
+    No *prox = aux;
+
+    for (aux = *inicio; aux != NULL; aux = prox){
+        prox = aux->prox;
+        free(aux);
+    }
+    *inicio = NULL;
+
 }
 
 /*
