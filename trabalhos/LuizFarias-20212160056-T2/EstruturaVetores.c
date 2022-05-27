@@ -4,6 +4,7 @@
 
 #include "EstruturaVetores.h"
 
+/*Vetor de structs de tamanho TAM*/
 Principal vetorPrincipal[TAM];
 
 /*
@@ -49,8 +50,11 @@ int criarEstruturaAuxiliar(int posicao, int tamanho){
         //Iterar lista alocando espaços
         for (int i = 0; i < tamanho; i++){
             aux = (No*) malloc(sizeof(No));
-            //aux->conteudo = i;
-            
+
+            //Se aux for NULL, retorne
+            if (aux == NULL)
+                return SEM_ESPACO_DE_MEMORIA;
+
             //Se for a primeira iteração, apontar lista para aux
             if (i == 0)
                 v->lista = aux;
@@ -60,9 +64,6 @@ int criarEstruturaAuxiliar(int posicao, int tamanho){
             ant = aux;
             aux = aux->prox; 
         }
-
-
-
         return SUCESSO;
     }
 }
@@ -94,7 +95,7 @@ int inserirNumeroEmEstrutura(int posicao, int valor){
         Principal *v = &vetorPrincipal[posicao - 1];
 
         // testar se existe a estrutura auxiliar
-        if (v->lista != NULL){
+        if (v->tamanho != 0){
 
             //Verificar se tem espaço
             if (v->tamanho > v->qtdElementos){
@@ -401,8 +402,10 @@ int getDadosOrdenadosDeTodasEstruturasAuxiliares(int vetorAux[]){
 }
 
 /*
-Objetivo: modificar o tamanho da estrutura auxiliar da posição 'posicao' para o novo tamanho 'novoTamanho' + tamanho atual
-Suponha o tamanho inicial = x, e novo tamanho = n. O tamanho resultante deve ser x + n. Sendo que x + n deve ser sempre >= 1
+Objetivo: modificar o tamanho da estrutura auxiliar da posição 'posicao' 
+para o novo tamanho 'novoTamanho' + tamanho atual
+Suponha o tamanho inicial = x, e novo tamanho = n. 
+O tamanho resultante deve ser x + n. Sendo que x + n deve ser sempre >= 1
 
 Rertono (int)
     SUCESSO - foi modificado corretamente o tamanho da estrutura auxiliar
@@ -412,9 +415,20 @@ Rertono (int)
     SEM_ESPACO_DE_MEMORIA - erro na alocação do novo valor
 */
 int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho){
+    Principal *v = &vetorPrincipal[posicao - 1];
+    int tTotal = novoTamanho + v->tamanho;
 
-    int retorno = 0;
-    return retorno;
+    int verificar = verificarPosicaoTamanho(posicao, v->tamanho);
+    if (verificar != SUCESSO)
+        return verificar;
+
+    //Verificar ses o novo tamanho é inválido
+    if (tTotal < 1)
+        return NOVO_TAMANHO_INVALIDO;
+
+    
+
+    return SUCESSO;
 }
 
 /*
@@ -469,7 +483,6 @@ Objetivo: inicializa o programa. deve ser chamado ao inicio do programa
 
 void inicializar(){
     for (int i = 0; i < TAM; i++){
-        vetorPrincipal[i].lista = NULL;
         vetorPrincipal[i].qtdElementos = 0;
         vetorPrincipal[i].tamanho = 0;
     }
@@ -491,7 +504,7 @@ void finalizar(){
 
 
         //Se a lista não estiver vaziar, percorrer e esvaziar
-        if (v->lista != NULL){
+        if (v->tamanho != 0){
 
             aux = v->lista;
 
@@ -500,7 +513,7 @@ void finalizar(){
                 free(aux);
                 aux = prox;
             }
-            v->lista = NULL;
+            //v->lista = NULL;
             v->tamanho = v->qtdElementos = 0;
         }
     }
@@ -514,7 +527,7 @@ int verificarPosicaoTamanho(int p, int t){
     if (p < 1 || p > 10) 
         return POSICAO_INVALIDA;
 
-    else if (v->lista == NULL)
+    else if (v->tamanho == 0)
         return SEM_ESTRUTURA_AUXILIAR;
     
     else if (t < 1)

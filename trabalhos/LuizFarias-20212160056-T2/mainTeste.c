@@ -24,8 +24,8 @@ int main(){
     testeExcluirNumeroEspecifico();
     testeListar();
     testeRetornarTodosNumeros();
-    /*
     testeMudarTamanhoEstrutura();
+    /*
     testeListaEncadeada();*/
     finalizar();
 }

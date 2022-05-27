@@ -19,12 +19,21 @@
         SUCESSO 
     };
 
-
+/*
+Struct que guarda os conteúdos e um ponteiro para o próximo item
+Usado para formar uma lista encadeada
+*/
     typedef struct reg {
         int conteudo;
         struct reg *prox;
     } No;
 
+
+/*
+Struct usada no vetor principal. 
+    -Aponta para uma lista do tipo 'No' 
+    Possui unsisgned int tamanho e qtdELementos
+*/
     typedef struct principal {
         No *lista;
         unsigned int tamanho;
