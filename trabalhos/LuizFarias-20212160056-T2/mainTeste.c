@@ -25,10 +25,12 @@ int main(){
     testeListar();
     testeRetornarTodosNumeros();
     testeMudarTamanhoEstrutura();
+    testeListaEncadeada();
     /*
-    testeListaEncadeada();*/
+    */
     finalizar();
 }
+
 int ligado = 1;
 void show_log(char *str)
 {
@@ -220,8 +222,7 @@ Rertono (int)
     NOVO_TAMANHO_INVALIDO - novo tamanho não pode ser negativo
     SEM_ESPACO_DE_MEMORIA - erro na alocação do novo valor
 */
-void testeMudarTamanhoEstrutura()
-{
+void testeMudarTamanhoEstrutura(){
     show_log("testeMudarTamanhoEstrutura()");
     int vet[1];
     printf("%d\n", modificarTamanhoEstruturaAuxiliar(2, -3) == NOVO_TAMANHO_INVALIDO);
@@ -253,8 +254,7 @@ void testeMudarTamanhoEstrutura()
 5 [1,34,12,6,27,-6, , , , ]
 */
 
-void testeListaEncadeada()
-{
+void testeListaEncadeada(){
     show_log("testeListaEncadeada()");
     int vet[10];
     No *inicio = montarListaEncadeadaComCabecote();

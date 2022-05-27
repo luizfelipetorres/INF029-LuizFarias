@@ -58,9 +58,21 @@ Struct usada no vetor principal.
     void finalizar();
     void dobrar(int *x);
 
+    /*Objetivo: verificar estrutura auxiliar usando posição de vetorPrincipal e tamanho
+    
+    Retornos possíveis:
+        POSICAO_INVALIDA            Se a posição for inválida
+        SEM_ESTRUTURA_AUXILIAR      Se não houver estrutura
+        TAMANHO_INVALIDO            se o tamanho for inválido
+        ESTRUTURA_AUXILIAR_VAZIA    se a estrutura estiver vazia
+        SUCESSO                     Se estiver tudo OK
+    */
     int verificarPosicaoTamanho(int p, int t);
-    int busca(No *inicio, int valor);
     int todasEstruturasVazias();
     int *intercala(int *vetor1, int tamanho1, int *vetor2, int tamanho2);
+
+void insere(No **inicio, int valor, No **fim);
+
+
 
 #endif  // TRABALHO2_ESTRUTURAVETORES_H
