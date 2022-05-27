@@ -17,6 +17,6 @@ Repositório criado para a atividades da disciplina [**INF029 - Laboratório de 
 - API's (Streams)
 
 ## :exclamation: Avaliações
-- Projeto escola 
-- Trabalho 1 (Funções)
-- Trabalho 2 (Ponteiros e estruturas dinâmicas)
+- [x] [Projeto escola](https://github.com/luizfelipetorres/INF029-LuizFarias/tree/master/projetoEscola) 
+- [x] [Trabalho 1 (Funções)](https://github.com/luizfelipetorres/INF029-LuizFarias/tree/master/trabalhos/LuizFarias-20212160056-T1)
+- [ ] [Trabalho 2 (Ponteiros e estruturas dinâmicas)](https://github.com/luizfelipetorres/INF029-LuizFarias/tree/master/trabalhos/LuizFarias-20212160056-T2)
