@@ -7,7 +7,8 @@
     // constante anterior mais 1, caso nao haja valor algum na primeira constante ela vai ser inicializada com 0
     enum { 
         TODAS_ESTRUTURAS_AUXILIARES_VAZIAS = -11, 
-        NOVO_TAMANHO_INVALIDO, NUMERO_INEXISTENTE,
+        NOVO_TAMANHO_INVALIDO, 
+        NUMERO_INEXISTENTE,
         ESTRUTURA_AUXILIAR_VAZIA, 
         TAMANHO_INVALIDO, 
         SEM_ESPACO_DE_MEMORIA, 
@@ -18,12 +19,21 @@
         SUCESSO 
     };
 
-
+/*
+Struct que guarda os conteúdos e um ponteiro para o próximo item
+Usado para formar uma lista encadeada
+*/
     typedef struct reg {
         int conteudo;
         struct reg *prox;
     } No;
 
+
+/*
+Struct usada no vetor principal. 
+    -Aponta para uma lista do tipo 'No' 
+    Possui unsisgned int tamanho e qtdELementos
+*/
     typedef struct principal {
         No *lista;
         unsigned int tamanho;
@@ -44,9 +54,25 @@
     No *montarListaEncadeadaComCabecote();
     void getDadosListaEncadeadaComCabecote(No *inicio, int vetorAux[]);
     void destruirListaEncadeadaComCabecote(No **inicio);
-
     void inicializar();
     void finalizar();
     void dobrar(int *x);
+
+    /*Objetivo: verificar estrutura auxiliar usando posição de vetorPrincipal e tamanho
+    
+    Retornos possíveis:
+        POSICAO_INVALIDA            Se a posição for inválida
+        SEM_ESTRUTURA_AUXILIAR      Se não houver estrutura
+        TAMANHO_INVALIDO            se o tamanho for inválido
+        ESTRUTURA_AUXILIAR_VAZIA    se a estrutura estiver vazia
+        SUCESSO                     Se estiver tudo OK
+    */
+    int verificarPosicaoTamanho(int p, int t);
+    int todasEstruturasVazias();
+    int *intercala(int *vetor1, int tamanho1, int *vetor2, int tamanho2);
+
+void insere(No **inicio, int valor, No **fim);
+
+
 
 #endif  // TRABALHO2_ESTRUTURAVETORES_H
