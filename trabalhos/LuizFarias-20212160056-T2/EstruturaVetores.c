@@ -508,7 +508,6 @@ void finalizar(){
     Principal *v;
     No *aux;
     No *prox;
-    No *fim = NULL;
 
     for (int i = 0; i < TAM; i++){
         v = &vetorPrincipal[i];
