@@ -20,3 +20,4 @@ Repositório criado para a atividades da disciplina [**INF029 - Laboratório de 
 - [x] [Projeto escola](https://github.com/luizfelipetorres/INF029-LuizFarias/tree/master/projetoEscola) 
 - [x] [Trabalho 1 (Funções)](https://github.com/luizfelipetorres/INF029-LuizFarias/tree/master/trabalhos/LuizFarias-20212160056-T1)
 - [x] [Trabalho 2 (Ponteiros e estruturas dinâmicas)](https://github.com/luizfelipetorres/INF029-LuizFarias/tree/master/trabalhos/LuizFarias-20212160056-T2)
+- [x] [Trabalho 3 (15 questões de recursão)](https://github.com/luizfelipetorres/INF029-LuizFarias/tree/master/listas/lista-recursao) 
